@@ -1,0 +1,12 @@
+protobuf<3.21
+pysc2>=3.0.0
+s2clientprotocol>=4.10.1.75800.0
+absl-py>=0.1.0
+numpy>=1.10
+pygame>=2.0.0
+
+[dev]
+pre-commit>=2.0.1
+black>=19.10b0
+flake8>=3.7
+flake8-bugbear>=20.1
