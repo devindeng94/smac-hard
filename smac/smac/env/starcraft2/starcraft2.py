@@ -25,6 +25,8 @@ from s2clientprotocol import debug_pb2 as d_pb
 
 from . import portspicker
 from . import run_parallel
+from ..scripts.s_3m.internal.script import script as i_script
+from ..scripts.s_3m.external.script import script as e_script
 
 races = {
     "R": sc_common.Random,
@@ -341,7 +343,7 @@ class StarCraft2Env(MultiAgentEnv):
                 map_path=_map.path,
                 map_data=self._run_config.map_data(_map.path),
             ),
-            realtime=True,
+            realtime=False,
             random_seed=self._seed,
         )
         create.player_setup.add(type=sc_pb.Participant)
@@ -370,7 +372,6 @@ class StarCraft2Env(MultiAgentEnv):
         #self._controllers[1].join_game(join)
         self.parallel.run((c.join_game, join) for c in self._controllers)
 
-        print('HERE!!!')
 
         game_info = self._controllers[0].game_info()
         map_info = game_info.start_raw
@@ -428,7 +429,6 @@ class StarCraft2Env(MultiAgentEnv):
             self._launch()
         else:
             self._restart()
-
         # Information kept for counting the reward
         self.death_tracker_ally = np.zeros(self.n_agents)
         self.death_tracker_enemy = np.zeros(self.n_enemies)
@@ -444,6 +444,7 @@ class StarCraft2Env(MultiAgentEnv):
 
         try:
             self._obs = self._controllers[0].observe()
+            self._blue_obs = self._controllers[1].observe()
             self.init_units()
         except (protocol.ProtocolError, protocol.ConnectionError):
             self.full_restart()
@@ -464,9 +465,10 @@ class StarCraft2Env(MultiAgentEnv):
         """
         try:
             self._kill_all_units()
+            #self._controllers[0].step(2)
+            #self._controllers[1].step(2)
+            self.parallel.run((c.step, 2) for c in self._controllers)
 
-            self._controllers[0].step(2)
-            self._controllers[1].step(2)
         except (protocol.ProtocolError, protocol.ConnectionError):
             self.full_restart()
 
@@ -501,27 +503,30 @@ class StarCraft2Env(MultiAgentEnv):
             if sc_action:
                 sc_actions.append(sc_action)
 
-        sc_enemy_actions = []
-        for a_id, action in enumerate(actions_int):
-            sc_action = self.get_enemy_action(a_id, action)    
-           
-            if sc_action:
-                sc_enemy_actions.append(sc_action)
+        #blue_actions = i_script(self._blue_obs, self._episode_steps)
+        blue_actions = e_script(self._blue_obs, self._episode_steps)
+
 
         # Send action request
         req_actions = sc_pb.RequestAction(actions=sc_actions)
-        req_enemy_actions = sc_pb.RequestAction(actions=sc_enemy_actions)
+        req_enemy_actions = sc_pb.RequestAction(actions=blue_actions)
+        all_actions = [req_actions, req_enemy_actions]
 
         try:
-            self._controllers[0].actions(req_actions)
-            self._controllers[1].actions(req_enemy_actions)
+            self.parallel.run((c.actions, a) for c, a in zip(self._controllers, all_actions))
+            #self._controllers[0].actions(req_actions)
+            #self._controllers[1].actions(req_enemy_actions)
             
             # Make step in SC2, i.e. apply actions
-            self._controllers[0].step(self._step_mul)
-            self._controllers[1].step(self._step_mul)
+            self.parallel.run((c.step, self._step_mul) for c in self._controllers)
+            #self._controllers[0].step(self._step_mul)
+            #self._controllers[1].step(self._step_mul)
             # Observe here so that we know if the episode is over.
             self._obs = self._controllers[0].observe()
+            self._blue_obs = self._controllers[1].observe()
+
         except (protocol.ProtocolError, protocol.ConnectionError):
+            
             self.full_restart()
             return 0, True, {}
 
@@ -696,114 +701,7 @@ class StarCraft2Env(MultiAgentEnv):
         sc_action = sc_pb.Action(action_raw=r_pb.ActionRaw(unit_command=cmd))
         return sc_action
     
-    def get_enemy_action(self, a_id, action):
-        """Construct the action for agent a_id."""
-        avail_actions = self.get_avail_agent_actions(a_id)
-        assert (
-            avail_actions[action] == 1
-        ), "Enemy {} cannot perform action {}".format(a_id, action)
-
-        unit = self.enemies[a_id]
-        tag = unit.tag
-        x = unit.pos.x
-        y = unit.pos.y
-
-        if action == 0:
-            # no-op (valid only when dead)
-            assert unit.health == 0, "No-op only available for dead agents."
-            if self.debug:
-                logging.debug("Enemy {}: Dead".format(a_id))
-            return None
-        elif action == 1:
-            # stop
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=actions["stop"],
-                unit_tags=[tag],
-                queue_command=False,
-            )
-            if self.debug:
-                logging.debug("Agent {}: Stop".format(a_id))
-
-        elif action == 2:
-            # move north
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=actions["move"],
-                target_world_space_pos=sc_common.Point2D(
-                    x=x, y=y + self._move_amount
-                ),
-                unit_tags=[tag],
-                queue_command=False,
-            )
-            if self.debug:
-                logging.debug("Agent {}: Move North".format(a_id))
-
-        elif action == 3:
-            # move south
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=actions["move"],
-                target_world_space_pos=sc_common.Point2D(
-                    x=x, y=y - self._move_amount
-                ),
-                unit_tags=[tag],
-                queue_command=False,
-            )
-            if self.debug:
-                logging.debug("Agent {}: Move South".format(a_id))
-
-        elif action == 4:
-            # move east
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=actions["move"],
-                target_world_space_pos=sc_common.Point2D(
-                    x=x + self._move_amount, y=y
-                ),
-                unit_tags=[tag],
-                queue_command=False,
-            )
-            if self.debug:
-                logging.debug("Agent {}: Move East".format(a_id))
-
-        elif action == 5:
-            # move west
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=actions["move"],
-                target_world_space_pos=sc_common.Point2D(
-                    x=x - self._move_amount, y=y
-                ),
-                unit_tags=[tag],
-                queue_command=False,
-            )
-            if self.debug:
-                logging.debug("Agent {}: Move West".format(a_id))
-        else:
-            # attack/heal units that are in range
-            target_id = action - self.n_actions_no_attack
-            if self.map_type == "MMM" and unit.unit_type == self.medivac_id:
-                target_unit = self.agents[target_id]
-                action_name = "heal"
-            else:
-                target_unit = self.enemies[target_id]
-                action_name = "attack"
-
-            action_id = actions[action_name]
-            target_tag = target_unit.tag
-
-            cmd = r_pb.ActionRawUnitCommand(
-                ability_id=action_id,
-                target_unit_tag=target_tag,
-                unit_tags=[tag],
-                queue_command=False,
-            )
-
-            if self.debug:
-                logging.debug(
-                    "Agent {} {}s unit # {}".format(
-                        a_id, action_name, target_id
-                    )
-                )
-
-        sc_action = sc_pb.Action(action_raw=r_pb.ActionRaw(unit_command=cmd))
-        return sc_action
+    
 
     def get_agent_action_heuristic(self, a_id, action):
         unit = self.get_unit_by_id(a_id)
@@ -1020,6 +918,7 @@ class StarCraft2Env(MultiAgentEnv):
             replay_dir=replay_dir,
             prefix=prefix,
         )
+        print(replay_path)
         logging.info("Replay saved at: %s" % replay_path)
 
     def unit_max_shield(self, unit):
@@ -1720,6 +1619,7 @@ class StarCraft2Env(MultiAgentEnv):
                 self._controllers[0].step(1)
                 self._controllers[1].step(1)
                 self._obs = self._controllers[0].observe()
+                self._blue_obs = self._controllers[1].observe()
             except (protocol.ProtocolError, protocol.ConnectionError):
                 self.full_restart()
                 self.reset()
