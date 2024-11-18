@@ -25,9 +25,9 @@ from s2clientprotocol import debug_pb2 as d_pb
 
 from . import portspicker
 from . import run_parallel
-from ..scripts.s_3m.internal.script import script as i_script
-from ..scripts.s_3m.external.script import script as e_script
 
+from ..scripts.s_3m.script import DecisionTreeScript as DTS_3m
+from ..scripts.s_8m.script import DecisionTreeScript as DTS_8m
 races = {
     "R": sc_common.Random,
     "P": sc_common.Protoss,
@@ -456,6 +456,7 @@ class StarCraft2Env(MultiAgentEnv):
                 )
             )
 
+        self.dts_script = DTS_8m()
         return self.get_obs(), self.get_state()
 
     def _restart(self):
@@ -504,8 +505,8 @@ class StarCraft2Env(MultiAgentEnv):
                 sc_actions.append(sc_action)
 
         #blue_actions = i_script(self._blue_obs, self._episode_steps)
-        blue_actions = e_script(self._blue_obs, self._episode_steps)
-
+        #blue_actions = e_script(self._blue_obs, self._episode_steps)
+        blue_actions = self.dts_script.script(self._blue_obs, self._episode_steps)    
 
         # Send action request
         req_actions = sc_pb.RequestAction(actions=sc_actions)
