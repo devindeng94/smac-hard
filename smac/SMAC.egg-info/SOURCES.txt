@@ -15,7 +15,9 @@ smac/env/multiagentenv.py
 smac/env/pettingzoo/StarCraft2PZEnv.py
 smac/env/pettingzoo/__init__.py
 smac/env/starcraft2/__init__.py
+smac/env/starcraft2/portspicker.py
 smac/env/starcraft2/render.py
+smac/env/starcraft2/run_parallel.py
 smac/env/starcraft2/starcraft2.py
 smac/env/starcraft2/maps/__init__.py
 smac/env/starcraft2/maps/smac_maps.py

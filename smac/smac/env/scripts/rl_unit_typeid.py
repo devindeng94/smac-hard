@@ -8,7 +8,9 @@ import enum
 
 class RLUnitTypeId(enum.Enum):
     
-    RL_MARINE = 2005
+    RL_MARINE = 1970
+    RL_STALKER = 1970
+    RL_ZEALOT = 1971
 
     def __repr__(self) -> str:
         return f"RLUnitTypeId.{self.name}"

@@ -1,7 +1,7 @@
-from s2clientprotocol import common_pb2 as sc_common
-from s2clientprotocol import sc2api_pb2 as sc_pb
-from s2clientprotocol import raw_pb2 as r_pb
-from s2clientprotocol import debug_pb2 as d_pb
+import math
+from ..utils.distance_api import *
+from ..utils.actions_api import *
+from ..utils.units_api import *
 
 from ..unit_typeid import UnitTypeId
 from ..rl_unit_typeid import RLUnitTypeId
@@ -14,19 +14,22 @@ actions = {
 }
 class DecisionTreeScript():
 
-    def __init__(self):
-        pass
+    def __init__(self, map_name):
+        
+        self.map_name = map_name
 
     def script(self, obs, iteration):
+
+        self.actions_list = []
+
 
         units = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
         enemy_units = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
 
-
         actions_list = []
 
         marines = [unit for unit in units if unit.unit_type==UnitTypeId.MARINE.value]
-        enemy_marines = [unit for unit in enemy_units if unit.unit_type==RLUnitTypeId.RL_MARINE.value]
+        enemy_marines = [unit for unit in enemy_units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][0]]
         
 
         if not marines or not enemy_marines:
@@ -36,16 +39,10 @@ class DecisionTreeScript():
         for marine in marines:
 
             # marine.attack(target)
-            cmd = r_pb.ActionRawUnitCommand(
-                    ability_id=actions["attack"],
-                    target_unit_tag=target.tag,
-                    unit_tags=[marine.tag],
-                    queue_command=False,
-                )
-            sc_action = sc_pb.Action(action_raw=r_pb.ActionRaw(unit_command=cmd))
-            actions_list.append(sc_action)
+            self.actions_list.append(attack(marine, target))
+            
 
-        return actions_list
+        return self.actions_list
 
 
 '''

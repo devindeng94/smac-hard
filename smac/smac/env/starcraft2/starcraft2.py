@@ -12,6 +12,7 @@ from copy import deepcopy
 import numpy as np
 import enum
 import math
+import random
 from absl import logging
 
 from pysc2 import maps
@@ -28,6 +29,29 @@ from . import run_parallel
 
 from ..scripts.s_3m.script import DecisionTreeScript as DTS_3m
 from ..scripts.s_8m.script import DecisionTreeScript as DTS_8m
+from ..scripts.s_27m.script import DecisionTreeScript as DTS_27m
+from ..scripts.s_3s5z.script import DecisionTreeScript as DTS_3s5z
+from ..scripts.s_3s5z.script_1 import DecisionTreeScript as DTS_3s5z_1
+from ..scripts.s_3s_vs_5z.script import DecisionTreeScript as DTS_3s_vs_5z
+
+scripts_dict = {
+    '3m': [DTS_3m],
+    '8m': [DTS_8m],
+    '5m_vs_6m': [DTS_8m],
+    '8m_vs_9m': [DTS_8m],
+    '10m_vs_11m': [DTS_8m],
+    '25m': [DTS_27m],
+    '27m_vs_30m': [DTS_27m],
+    '3s5z': [DTS_3s5z, DTS_3s5z_1],
+    '2s3z': [DTS_3s5z],
+    '3s5z_vs_3s6z': [DTS_3s5z],
+    '3s_vs_3z': [DTS_3s_vs_5z],
+    '3s_vs_4z': [DTS_3s_vs_5z],
+    '3s_vs_5z': [DTS_3s_vs_5z],
+}
+
+
+
 races = {
     "R": sc_common.Random,
     "P": sc_common.Protoss,
@@ -456,7 +480,7 @@ class StarCraft2Env(MultiAgentEnv):
                 )
             )
 
-        self.dts_script = DTS_8m()
+        self.dts_script = random.choice(scripts_dict[self.map_name])(self.map_name)
         return self.get_obs(), self.get_state()
 
     def _restart(self):
