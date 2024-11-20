@@ -115,3 +115,14 @@ def center(units):
     x = [u.pos.x for u in units]
     y = [u.pos.y for u in units]
     return (sum(x) / len(x), sum(y)/len(y))
+
+def init_unit(obs, cls):
+    
+    agents = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
+    enemies = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
+    
+    for i, key in enumerate(cls.ally_list):
+        setattr(cls, key, sorted([agent for agent in agents if agent.unit_type==MAP_UNITS_TYPES[cls.map_name]['ally'][i]], key=lambda u: u.tag))
+        
+    for i, key in enumerate(cls.enemy_list):
+        setattr(cls, key, sorted([enemy for enemy in enemies if enemy.unit_type==MAP_UNITS_TYPES[cls.map_name]['enemy'][i]], key=lambda u: u.tag))

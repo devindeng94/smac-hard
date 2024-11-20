@@ -54,7 +54,7 @@ class DecisionTreeScript():
                 self.actions_list.append(move(m, (m.pos.x-1, m.pos.y)))
         else:
             self.engage = False
-            target = min(enemy_marines, key=lambda e: math.fabs(e.pos.x-center(marines)[0]))
+            target = min(enemy_marines, key=lambda e: e.health)
             for i, m in enumerate(marines):
 
                 if self.pre_health[m.tag] != self.cur_health[m.tag] and m.health/m.health_max < 0.3:

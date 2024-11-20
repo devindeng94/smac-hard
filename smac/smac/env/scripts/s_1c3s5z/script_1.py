@@ -21,8 +21,9 @@ class DecisionTreeScript():
         units = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
         enemy_units = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
 
-        stalkers = [unit for unit in units if unit.unit_type==UnitTypeId.STALKER.value]
-        zealots = [unit for unit in units if unit.unit_type==UnitTypeId.ZEALOT.value]
+        stalkers = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][2]]
+        zealots = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][1]]
+        colossus = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][0]]
 
         if iteration < 100 and len(stalkers) < 3:
             for stalker in stalkers:
@@ -65,6 +66,9 @@ class DecisionTreeScript():
                 self.actions_list.append(move(zealot, (23.0, 16.0)))
             else:
                 self.actions_list.append(attack(zealot, closest_enemy))
+
+        for c in colossus:
+            self.actions_list.append(move(c, center(stalkers)))
 
         return self.actions_list
 
