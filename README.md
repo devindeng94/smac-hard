@@ -9,13 +9,13 @@
 | 10m_vs_11m       | 8m               |   S    |      |       |      |       |       |
 | 25m              | 25m              |   S    |      |       |      |       |       |
 | 27m_vs_30m       | 25m              |   S    |      |       |      |       |       |
-| 2s3z             | 3s5z             |   R    |      |       |      |       |       |
-| 3s5z             | 3s5z             |   R    |      |       |      |       |       |
-| 3s5z_vs_3s6z     | 3s5z             |   R    |      |       |      |       |       |
-| 1c3s5z           | 1c3s5z           |        |      |       |      |       |       |
-| 3s_vs_3z         | 3s_vs_4z         |        |      |       |      |       |       |
-| 3s_vs_4z         | 3s_vs_4z         |        |      |       |      |       |       |
-| 3s_vs_5z         | 3s_vs_4z         |        |      |       |      |       |       |
+| 2s3z             | 3s5z             |   S    |      |       |      |       |       |
+| 3s5z             | 3s5z             |   S    |      |       |      |       |       |
+| 3s5z_vs_3s6z     | 3s5z             |   S    |      |       |      |       |       |
+| 1c3s5z           | 1c3s5z           |   R    |      |       |      |       |       |
+| 3s_vs_3z         | 3s_vs_4z         |   S    |      |       |      |       |       |
+| 3s_vs_4z         | 3s_vs_4z         |   S    |      |       |      |       |       |
+| 3s_vs_5z         | 3s_vs_4z         |   S    |      |       |      |       |       |
 | bane_vs_bane     | bane_vs_bane     |        |      |       |      |       |       |
 | so_many_baneling | so_many_baneling |        |      |       |      |       |       |
 | 2s_vs_1sc        | default          |        |      |       |      |       |       |
