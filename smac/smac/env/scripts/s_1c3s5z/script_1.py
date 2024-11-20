@@ -4,7 +4,6 @@ from ..utils.actions_api import *
 from ..utils.units_api import *
 
 from ..unit_typeid import UnitTypeId
-from ..rl_unit_typeid import RLUnitTypeId
 
 MOVE_AMOUNT = 2
 SHOOT_RANGE = 7
