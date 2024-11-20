@@ -55,7 +55,7 @@ class DecisionTreeScript():
                 if distance_to(stalker, closest_stalker) < 6:
                     actions_list.append(attack(stalker, closest_stalker))
                 else:
-                    actions_list.append(move(stalker, toward(stalker, closest_stalker, 2))) # Retreat slightly
+                    actions_list.append(move(stalker, toward(stalker, closest_stalker, -2))) # Retreat slightly
         else:
             rest_units += self.stalkers
 
@@ -66,7 +66,7 @@ class DecisionTreeScript():
                 if distance_to(zealot, closest_zealot) < 0.1:
                     actions_list.append(attack(zealot, closest_zealot))
                 else:
-                    actions_list.append(move(zealot, toward(zealot, closest_zealot, 2))) # Retreat slightly
+                    actions_list.append(move(zealot, toward(zealot, closest_zealot, -1))) # Retreat slightly
         else:
             rest_units += self.zealots  # Reposition to avoid being surrounded
 

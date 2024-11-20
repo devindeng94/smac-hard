@@ -29,8 +29,25 @@ def nearest_n_units(target, candidates, num):
 
     return sorted(candidates, key=lambda e: distance_to(e, target))[:num]
 
-def toward(us, ut, dis):
+def toward(us, ut, d):
     xs, ys = us.pos.x, us.pos.y
     xt, yt = ut.pos.x, ut.pos.y
-    dis = min(dis, distance_to((xs, ys), (xt, yt)))
-    return (xs + (xt - xs)/dis, ys + (yt - ys)/dis)
+    dis = distance_to((xs, ys), (xt, yt))
+    return (xs + (xt - xs)/dis*d, ys + (yt - ys)/dis*d)
+
+def in_map_bounds(pos, map_state):
+    return pos[0] < map_state.x and pos[1] < map_state.y
+
+def get_direction(p1, p2):
+    diff = [p2[0]-p1[0], p2[1]-p1[1]]
+    length = math.hypot(diff[0], diff[1])
+    return [diff[0]/length, diff[1]/length]
+
+
+def closer_than(target, candidate, dist):
+
+    closer = []
+    for c in candidate:
+        if distance_to(c, target) <= dist:
+            closer.append(c)
+    return closer

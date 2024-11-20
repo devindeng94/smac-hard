@@ -7,7 +7,7 @@ from ..unit_typeid import UnitTypeId
 from ..rl_unit_typeid import RLUnitTypeId
 
 MOVE_AMOUNT = 2
-SHOOT_RANGE = 6
+SHOOT_RANGE = 7
 
 class DecisionTreeScript():
 
@@ -15,15 +15,19 @@ class DecisionTreeScript():
         
         self.map_name = map_name
 
+        
+
     def script(self, obs, iteration):
         self.actions_list = []
 
         units = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
         enemy_units = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
 
-        stalkers = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][2]]
-        zealots = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][1]]
-        colossus = [unit for unit in units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][0]]
+        
+        stalkers = [unit for unit in units if unit.unit_type==UnitTypeId.STALKER.value]
+        zealots = [unit for unit in units if unit.unit_type==UnitTypeId.ZEALOT.value]
+        colossus = [unit for unit in units if unit.unit_type==UnitTypeId.COLOSSUS.value]
+
 
         if iteration < 100 and len(stalkers) < 3:
             for stalker in stalkers:
@@ -37,7 +41,7 @@ class DecisionTreeScript():
                 closest_enemy = nearest_n_units(stalker, enemy_units, 1)[0]
                 if distance_to(stalker, closest_enemy) > SHOOT_RANGE:
                     self.actions_list.append(attack(stalker, closest_enemy))
-                elif stalker.health / stalker.health_max < 0.7:
+                elif stalker.health / stalker.health_max < 0.5:
                     self.actions_list.append(move(stalker, (23.0, 16.0)))
                 else:
                     self.actions_list.append(attack(stalker, closest_enemy))
@@ -59,7 +63,7 @@ class DecisionTreeScript():
                         self.actions_list.append(move(stalker, (23.0, 16.0)))
         
         for zealot in zealots:
-            closest_enemy = closest_enemy = nearest_n_units(zealot, enemy_units, 1)[0]
+            closest_enemy = nearest_n_units(zealot, enemy_units, 1)[0]
             if distance_to(zealot, closest_enemy) > SHOOT_RANGE:
                 self.actions_list.append(attack(zealot, closest_enemy))
             elif zealot.health / zealot.health_max < 0.5:
@@ -68,7 +72,8 @@ class DecisionTreeScript():
                 self.actions_list.append(attack(zealot, closest_enemy))
 
         for c in colossus:
-            self.actions_list.append(move(c, center(stalkers)))
+            closest_enemy = nearest_n_units(c, enemy_units, 1)[0]
+            self.actions_list.append(attack(c, closest_enemy))
 
         return self.actions_list
 
