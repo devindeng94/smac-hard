@@ -18,10 +18,10 @@
 | 3s_vs_5z         | 3s_vs_4z         |   S    |      |       |      |       |       |
 | bane_vs_bane     | bane_vs_bane     |        |      |       |      |       |       |
 | so_many_baneling | so_many_baneling |        |      |       |      |       |       |
-| 2s_vs_1sc        | default          |        |      |       |      |       |       |
-| 2m_vs_1z         | 2m_vs_1z         |        |      |       |      |       |       |
+| 2s_vs_1sc        | default          |   S    |      |       |      |       |       |
+| 2m_vs_1z         | 2m_vs_1z         |   S    |      |       |      |       |       |
 | 2c_vs_64zg       | 2c_vs_64zg       |        |      |       |      |       |       |
-| MMM              | MMM2             |        |      |       |      |       |       |
-| MMM2             | MMM2             |        |      |       |      |       |       |
+| MMM              | MMM2             |   R    |      |       |      |       |       |
+| MMM2             | MMM2             |   R    |      |       |      |       |       |
 | 6h_vs_8z         | 6h_vs_8z         |        |      |       |      |       |       |
 | corridor         | corridor         |        |      |       |      |       |       |
