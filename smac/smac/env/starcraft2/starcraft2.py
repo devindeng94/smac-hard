@@ -564,7 +564,10 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         except (protocol.ProtocolError, protocol.ConnectionError):
             
             self.full_restart()
-            return [0, 0], True, {}
+            if self.mode == 'single':
+                return 0, True, {}
+            else:
+                return [0, 0], True, {}
 
         self._total_steps += 1
         self._episode_steps += 1
@@ -1470,10 +1473,7 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
 
     def get_unit_type_id(self, unit, new):
         """Returns the ID of unit type in the given scenario."""
-        if unit.unit_type > 2000 and not new:
-            raise
-        if unit.unit_type < 2000 and new:
-            raise
+
         if new:  # use new SC2 unit types
             type_id = unit.unit_type - self._min_unit_type
         else:  # use default SC2 unit types
