@@ -22,8 +22,12 @@ class DecisionTreeScript():
         
     def script(self, obs, iteration):
 
+        agents = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
+        enemies = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
+
         actions_list = []
         init_unit(obs, self)
+
         
         total_enemies = self.enemy_colossus + self.enemy_stalkers + self.enemy_zealots
         

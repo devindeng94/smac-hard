@@ -13,10 +13,14 @@ from ..scripts.s_1c3s5z.script_2 import DecisionTreeScript as DTS_1c3s5z_2
 
 from ..scripts.s_2m_vs_1z.script import DecisionTreeScript as DTS_2m_vs_1z
 from ..scripts.s_2s_vs_1sc.script import DecisionTreeScript as DTS_2s_vs_1sc
-
+from ..scripts.s_MMM.script import DecisionTreeScript as DTS_MMM
+from ..scripts.s_MMM.script_1 import DecisionTreeScript as DTS_MMM_1
+from ..scripts.s_MMM.script_2 import DecisionTreeScript as DTS_MMM_2
+from ..scripts.s_MMM.script_3 import DecisionTreeScript as DTS_MMM_3
 
 
 SCRIPT_DICT = {
+
     '3m': [DTS_3m],
     '8m': [DTS_8m, DTS_8m_1, DTS_8m_2],
     '5m_vs_6m': [DTS_8m, DTS_8m_1, DTS_8m_2],
@@ -30,7 +34,9 @@ SCRIPT_DICT = {
     '3s_vs_3z': [DTS_3s_vs_5z],
     '3s_vs_4z': [DTS_3s_vs_5z],
     '3s_vs_5z': [DTS_3s_vs_5z],
-    '1c3s5z': [DTS_1c3s5z_2],
+    '1c3s5z': [DTS_1c3s5z],
     '2m_vs_1z': [DTS_2m_vs_1z],
     '2s_vs_1sc': [DTS_2s_vs_1sc],
+    'MMM': [DTS_MMM_3],
+    'MMM2': [DTS_MMM, DTS_MMM_1]
 }
