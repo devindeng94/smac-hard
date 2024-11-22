@@ -12,11 +12,11 @@
 | 2s3z             | 3s5z             |   S    |      |       |      |       |       |
 | 3s5z             | 3s5z             |   S    |      |       |      |       |       |
 | 3s5z_vs_3s6z     | 3s5z             |   S    |      |       |      |       |       |
-| 1c3s5z           | 1c3s5z           |   S    |      |       |      |       |       |
+| 1c3s5z           | 1c3s5z           |   R    |      |       |      |       |       |
 | 3s_vs_3z         | 3s_vs_4z         |   S    |      |       |      |       |       |
 | 3s_vs_4z         | 3s_vs_4z         |   S    |      |       |      |       |       |
 | 3s_vs_5z         | 3s_vs_4z         |   S    |      |       |      |       |       |
-| bane_vs_bane     | bane_vs_bane     |        |      |       |      |       |       |
+| bane_vs_bane     | bane_vs_bane     |   R    |      |       |      |       |       |
 | so_many_baneling | so_many_baneling |   S    |      |       |      |       |       |
 | 2s_vs_1sc        | default          |   S    |      |       |      |       |       |
 | 2m_vs_1z         | 2m_vs_1z         |   S    |      |       |      |       |       |
@@ -24,4 +24,4 @@
 | MMM              | MMM2             |   S    |      |       |      |       |       |
 | MMM2             | MMM2             |   S    |      |       |      |       |       |
 | 6h_vs_8z         | 6h_vs_8z         |        |      |       |      |       |       |
-| corridor         | corridor         |        |      |       |      |       |       |
+| corridor         | corridor         |   R    |      |       |      |       |       |
