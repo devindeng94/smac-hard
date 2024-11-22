@@ -1,4 +1,5 @@
 import math
+import random
 from ..utils.distance_api import *
 from ..utils.actions_api import *
 from ..utils.units_api import *
@@ -25,6 +26,7 @@ class DecisionTreeScript():
         
     def script(self, obs, iteration):
 
+
         agents = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
         enemies = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
 
@@ -39,7 +41,13 @@ class DecisionTreeScript():
                 self.cur_health[m.tag] = 1
             self.init = False
         
-        target_units = self.enemy_marines + self.enemy_marauders
+        if self.enemy_marines:
+            target_units = self.enemy_marines
+        elif self.enemy_marauders:
+            target_units = self.enemy_marauders
+        else:
+            target_units = enemies
+        
         
         # Tactic 1: Init forming. Marauders ahead, Marines middle, and Medivac last
 
@@ -61,13 +69,17 @@ class DecisionTreeScript():
         
         self.engage = False
         # Attack nearest zealot first, then marauders, finally medivac.
+
+        if target_units:
+            target = min(nearest_n_units(center(agents) ,target_units, 3), key=lambda e: e.health+e.shield)
+        else:
+            target = random.choice(enemies)
         for m in self.marines:
         
             if self.pre_health[m.tag] > self.cur_health[m.tag] and m.health/m.health_max < 0.3:
                 actions_list.append(move(m, (m.pos.x+1, m.pos.y)))
             else:    
-                if target_units:
-                    target = nearest_n_units(m ,target_units, 1)[0]
+                if target:
                     actions_list.append(attack(m, target))
 
 
@@ -81,8 +93,8 @@ class DecisionTreeScript():
         for m in self.marauders:
             if m.pos.x < front_line[0]:
                 if target_units:
-                    # Attack
-                    actions_list.append(attack(m, nearest_n_units(m, target_units, 1)[0]))
+                    if target:
+                        actions_list.append(attack(m, target))
             else:
                 actions_list.append(move(m, (front_line[0], m.pos.y)))
                 

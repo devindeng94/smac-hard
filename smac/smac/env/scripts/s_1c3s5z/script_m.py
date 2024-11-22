@@ -24,7 +24,7 @@ class DecisionTreeScript():
         zealots = [unit for unit in self.units if unit.unit_type==UnitTypeId.ZEALOT.value]
         colossi = [unit for unit in self.units if unit.unit_type==UnitTypeId.COLOSSUS.value]
 
-        if not stalkers or not zealots or not colossi:
+        if not stalkers and not zealots and not colossi:
             return []
         
         if not self.enemy_units:

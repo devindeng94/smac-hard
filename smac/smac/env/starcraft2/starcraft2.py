@@ -513,7 +513,8 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         if self.mode == 'single':
             red_actions_int = [int(a) for a in actions]
             red_sc_actions = self.actions2sc_action(red_actions_int, 0)
-            #from smac.env.scripts.s_2s_vs_1sc.red_script import DecisionTreeScript
+
+            #from smac.env.scripts.s_bane_vs_bane.red_script import DecisionTreeScript
             #red_sc_actions = DecisionTreeScript(self.map_name).script(self._obs_list[0], self._episode_steps)
             
             if self.dts_script is not None:

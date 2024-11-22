@@ -5,12 +5,6 @@ from ..utils.units_api import *
 
 from ..unit_typeid import UnitTypeId
 
-actions = {
-    "move": 16,  # target: PointOrUnit
-    "attack": 23,  # target: PointOrUnit
-    "stop": 4,  # target: None
-    "heal": 386,  # Unit
-}
 class DecisionTreeScript():
 
     def __init__(self, map_name):

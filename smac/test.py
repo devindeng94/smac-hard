@@ -3,13 +3,13 @@ import numpy as np
 
 
 def main():
-    env = StarCraft2Env(map_name="3s_vs_5z")
+    env = StarCraft2Env(map_name="MMM")
     env_info = env.get_env_info()
 
     n_actions = env_info["n_actions"]
     n_agents = env_info["n_agents"]
 
-    n_episodes = 10
+    n_episodes = 1
 
     for e in range(n_episodes):
         env.reset()
@@ -28,13 +28,14 @@ def main():
                 action = np.random.choice(avail_actions_ind)
                 actions.append(action)
 
-            reward, terminated, _ = env.step(actions)
+            reward, terminated, info = env.step(actions)
             episode_reward += reward
             timesteps += 1
 
         print(timesteps)
 
         print("Total reward in episode {} = {}".format(e, episode_reward))
+        print(info)
     env.save_replay()
     env.close()
 
