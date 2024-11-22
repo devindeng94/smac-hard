@@ -23,5 +23,5 @@
 | 2c_vs_64zg       | 2c_vs_64zg       |        |      |       |      |       |       |
 | MMM              | MMM2             |   S    |      |       |      |       |       |
 | MMM2             | MMM2             |   S    |      |       |      |       |       |
-| 6h_vs_8z         | 6h_vs_8z         |        |      |       |      |       |       |
+| 6h_vs_8z         | 6h_vs_8z         |   R    |      |       |      |       |       |
 | corridor         | corridor         |   R    |      |       |      |       |       |
