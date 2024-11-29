@@ -3,7 +3,7 @@ import platform
 from ..unit_typeid import UnitTypeId
 
 SYSTEM = platform.system()
-BASE_UNIT_TYPE = 2005 if SYSTEM == 'windows' or 'Darwin' else 1970
+BASE_UNIT_TYPE = 2005 if SYSTEM == 'windows' or SYSTEM == 'Darwin' else 1970
 
 MAP_UNITS_TYPES = {
     '10m_vs_11m': {

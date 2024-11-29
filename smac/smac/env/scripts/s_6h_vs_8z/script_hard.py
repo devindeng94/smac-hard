@@ -18,6 +18,9 @@ class DecisionTreeScript():
         self.enemy_hydralisk = []
         self.enemy_list = ['enemy_hydralisk']
         
+        self.target = {}
+        self.init = True
+        
         
         
     def script(self, obs, iteration):
@@ -25,11 +28,26 @@ class DecisionTreeScript():
         actions_list = []
         init_unit(obs, self)
 
+        self.zealots = sorted(self.zealots, key=lambda a: a.tag)
+        self.enemy_hydralisk = sorted(self.enemy_hydralisk, key=lambda e: e.tag)
+
+        if self.init:
+            for i, zealot in enumerate(self.zealots):
+                self.target[zealot.tag] = self.enemy_hydralisk[i % len(self.enemy_hydralisk)]
+            self.init = False
+
+
         # Tacktic 1: Focus fire on one enemy
         if not self.enemy_hydralisk:
             return []
-        
-        for i, zealot in enumerate(self.zealots):
-            actions_list.append(attack(zealot, self.enemy_hydralisk[i % len(self.enemy_hydralisk)]))
+
+
+        for zealot in self.zealots:
+            t = self.target[zealot.tag]
+            if not t.is_active:
+                # Re-assign another target
+                t = nearest_n_units(zealot, self.enemy_hydralisk, 1)[0]
+                self.target[zealot.tag] = t
+            actions_list.append(attack(zealot, t))
 
         return actions_list

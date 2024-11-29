@@ -17,8 +17,8 @@ from .s_2s_vs_1sc.script import DecisionTreeScript as DTS_2s_vs_1sc
 from .s_MMM.script import DecisionTreeScript as DTS_MMM
 from .s_so_many_baneling.script import DecisionTreeScript as DTS_so_many_baneling
 
-#from .s_6h_vs_8z.script_easy import DecisionTreeScript as DTS_6h_vs_8z
-from .s_6h_vs_8z.script_hard import DecisionTreeScript as DTS_6h_vs_8z
+from .s_6h_vs_8z.script_easy import DecisionTreeScript as DTS_6h_vs_8z_e
+from .s_6h_vs_8z.script_hard import DecisionTreeScript as DTS_6h_vs_8z_h
 from .s_corridor.script import DecisionTreeScript as DTS_corridor
 from .s_bane_vs_bane.script import DecisionTreeScript as DTS_bane_vs_bane
 
@@ -45,7 +45,7 @@ SCRIPT_DICT = {
     'MMM': [DTS_MMM],
     'MMM2': [DTS_MMM],
     'so_many_baneling': [DTS_so_many_baneling],
-    '6h_vs_8z': [DTS_6h_vs_8z],
+    '6h_vs_8z': [DTS_6h_vs_8z_h],
     'corridor': [DTS_corridor],
     'bane_vs_bane': [DTS_bane_vs_bane]
 }
