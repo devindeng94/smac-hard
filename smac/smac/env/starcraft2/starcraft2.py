@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import os
 
 from smac.env.multiplayer_multiagentenv import MultiPlayer_MultiAgentEnv
 from smac.env.starcraft2.maps import get_map_params
@@ -315,7 +316,6 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         self._sc2_procs = None
         self._controllers = None
 
-        self.parallel = run_parallel.RunParallel()
         self.mode = mode
         assert self.mode in ['single', 'multi']
 
@@ -324,6 +324,8 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
 
     def _launch(self):
         """Launch the StarCraft II game."""
+        
+        self.parallel = run_parallel.RunParallel()
         self._run_config = run_configs.get(version=self.game_version)
         _map = maps.get(self.map_name)
 
@@ -334,9 +336,14 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
             window_size=self.window_size, want_rgb=False
         )
         '''
-        ports = portspicker.pick_unused_ports(self.players * 2)
+        self.ports = portspicker.pick_unused_ports(self.players * 2)
         self._sc2_procs = [self._run_config.start(window_size=self.window_size, want_rgb=False) for _ in range(self.players)]
         self._controllers = [p.controller for p in self._sc2_procs]
+
+        map_path = os.path.basename(_map.path)
+        
+        for c in self._controllers:  # Skip parallel due to a race condition on Windows.
+            c.save_map(map_path, _map.data(self._run_config))
 
         # Request to create the game
         create = sc_pb.RequestCreateGame(
@@ -362,9 +369,9 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         )
 
         join.shared_port = 0  # unused
-        join.server_ports.game_port = ports[0]
-        join.server_ports.base_port = ports[1]
-        join.client_ports.add(game_port=ports[2], base_port=ports[3])
+        join.server_ports.game_port = self.ports[0]
+        join.server_ports.base_port = self.ports[1]
+        join.client_ports.add(game_port=self.ports[2], base_port=self.ports[3])
 
         self._controllers[0].create_game(create)
 
@@ -476,8 +483,12 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
 
     def full_restart(self):
         """Full restart. Closes the SC2 process and launches a new one."""
+        for c in self._controllers:
+            c.quit()
         for p in self._sc2_procs:
             p.close()
+        portspicker.return_ports(self.ports)
+        self.parallel.shutdown()
         #self._sc2_proc.close()
         self._launch()
         self.force_restarts += 1

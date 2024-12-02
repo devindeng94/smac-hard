@@ -3,13 +3,13 @@ import numpy as np
 
 
 def main():
-    env = StarCraft2Env(map_name="MMM")
+    env = StarCraft2Env(map_name="6h_vs_8z")
     env_info = env.get_env_info()
 
     n_actions = env_info["n_actions"]
     n_agents = env_info["n_agents"]
 
-    n_episodes = 1
+    n_episodes = 10
 
     for e in range(n_episodes):
         env.reset()
