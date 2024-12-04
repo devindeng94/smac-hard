@@ -28,7 +28,7 @@ class DecisionTreeScript():
             return self.actions_list
         
         # Move left
-        if min([distance_to(center(marines, em)) for em in enemy_marines]) > 7:
+        if min([distance_to(center(marines), em) for em in enemy_marines]) > 7:
             for marine in marines:
                 self.actions_list.append(move_point(marine, marine.pos.x-2, marine.pos.y))
         else:
