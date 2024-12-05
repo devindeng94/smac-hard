@@ -325,107 +325,117 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
     def _launch(self):
         """Launch the StarCraft II game."""
         
-        self.parallel = run_parallel.RunParallel()
-        self._run_config = run_configs.get(version=self.game_version)
-        _map = maps.get(self.map_name)
+        while True:
+            try:
+                self.parallel = run_parallel.RunParallel()
+                self._run_config = run_configs.get(version=self.game_version)
+                _map = maps.get(self.map_name)
 
-        # Setting up the interface
-        interface_options = sc_pb.InterfaceOptions(raw=True, score=False)
-        '''
-        self._sc2_proc = self._run_config.start(
-            window_size=self.window_size, want_rgb=False
-        )
-        '''
-        self.ports = portspicker.pick_unused_ports(self.players * 2)
-        self._sc2_procs = [self._run_config.start(window_size=self.window_size, want_rgb=False) for _ in range(self.players)]
-        self._controllers = [p.controller for p in self._sc2_procs]
-
-        map_path = os.path.basename(_map.path)
-        
-        for c in self._controllers:  # Skip parallel due to a race condition on Windows.
-            c.save_map(map_path, _map.data(self._run_config))
-
-        # Request to create the game
-        create = sc_pb.RequestCreateGame(
-            local_map=sc_pb.LocalMap(
-                map_path=_map.path,
-                map_data=self._run_config.map_data(_map.path),
-            ),
-            realtime=False,
-            random_seed=self._seed,
-        )
-        create.player_setup.add(type=sc_pb.Participant)
-        create.player_setup.add(type=sc_pb.Participant)
-        '''
-        create.player_setup.add(
-            type=sc_pb.Computer,
-            race=races[self._bot_race],
-            difficulty=difficulties[self.difficulty],
-        )
-        '''
-
-        join = sc_pb.RequestJoinGame(
-            race=sc_common.Random, options=interface_options
-        )
-
-        join.shared_port = 0  # unused
-        join.server_ports.game_port = self.ports[0]
-        join.server_ports.base_port = self.ports[1]
-        join.client_ports.add(game_port=self.ports[2], base_port=self.ports[3])
-
-        self._controllers[0].create_game(create)
-
-
-        #self._controllers[0].join_game(join)
-        #self._controllers[1].join_game(join)
-        self.parallel.run((c.join_game, join) for c in self._controllers)
-
-
-        game_info = self._controllers[0].game_info()
-        map_info = game_info.start_raw
-        map_play_area_min = map_info.playable_area.p0
-        map_play_area_max = map_info.playable_area.p1
-        self.max_distance_x = map_play_area_max.x - map_play_area_min.x
-        self.max_distance_y = map_play_area_max.y - map_play_area_min.y
-        self.map_x = map_info.map_size.x
-        self.map_y = map_info.map_size.y
-
-        if map_info.pathing_grid.bits_per_pixel == 1:
-            vals = np.array(list(map_info.pathing_grid.data)).reshape(
-                self.map_x, int(self.map_y / 8)
-            )
-            self.pathing_grid = np.transpose(
-                np.array(
-                    [
-                        [(b >> i) & 1 for b in row for i in range(7, -1, -1)]
-                        for row in vals
-                    ],
-                    dtype=bool,
+                # Setting up the interface
+                interface_options = sc_pb.InterfaceOptions(raw=True, score=False)
+                '''
+                self._sc2_proc = self._run_config.start(
+                    window_size=self.window_size, want_rgb=False
                 )
-            )
-        else:
-            self.pathing_grid = np.invert(
-                np.flip(
-                    np.transpose(
-                        np.array(
-                            list(map_info.pathing_grid.data), dtype=bool
-                        ).reshape(self.map_x, self.map_y)
+                '''
+                self.ports = portspicker.pick_unused_ports(self.players * 2)
+                self._sc2_procs = [self._run_config.start(window_size=self.window_size, want_rgb=False) for _ in range(self.players)]
+                self._controllers = [p.controller for p in self._sc2_procs]
+
+                map_path = os.path.basename(_map.path)
+                
+                for c in self._controllers:  # Skip parallel due to a race condition on Windows.
+                    c.save_map(map_path, _map.data(self._run_config))
+
+                # Request to create the game
+                create = sc_pb.RequestCreateGame(
+                    local_map=sc_pb.LocalMap(
+                        map_path=_map.path,
+                        map_data=self._run_config.map_data(_map.path),
                     ),
-                    axis=1,
+                    realtime=False,
+                    random_seed=self._seed,
                 )
-            )
+                create.player_setup.add(type=sc_pb.Participant)
+                create.player_setup.add(type=sc_pb.Participant)
+                '''
+                create.player_setup.add(
+                    type=sc_pb.Computer,
+                    race=races[self._bot_race],
+                    difficulty=difficulties[self.difficulty],
+                )
+                '''
 
-        self.terrain_height = (
-            np.flip(
-                np.transpose(
-                    np.array(list(map_info.terrain_height.data)).reshape(
-                        self.map_x, self.map_y
+                join = sc_pb.RequestJoinGame(
+                    race=sc_common.Random, options=interface_options
+                )
+
+                join.shared_port = 0  # unused
+                join.server_ports.game_port = self.ports[0]
+                join.server_ports.base_port = self.ports[1]
+                join.client_ports.add(game_port=self.ports[2], base_port=self.ports[3])
+
+                self._controllers[0].create_game(create)
+
+
+                #self._controllers[0].join_game(join)
+                #self._controllers[1].join_game(join)
+                self.parallel.run((c.join_game, join) for c in self._controllers)
+
+
+                game_info = self._controllers[0].game_info()
+                map_info = game_info.start_raw
+                map_play_area_min = map_info.playable_area.p0
+                map_play_area_max = map_info.playable_area.p1
+                self.max_distance_x = map_play_area_max.x - map_play_area_min.x
+                self.max_distance_y = map_play_area_max.y - map_play_area_min.y
+                self.map_x = map_info.map_size.x
+                self.map_y = map_info.map_size.y
+
+                if map_info.pathing_grid.bits_per_pixel == 1:
+                    vals = np.array(list(map_info.pathing_grid.data)).reshape(
+                        self.map_x, int(self.map_y / 8)
                     )
-                ),
-                1,
-            )
-            / 255
-        )
+                    self.pathing_grid = np.transpose(
+                        np.array(
+                            [
+                                [(b >> i) & 1 for b in row for i in range(7, -1, -1)]
+                                for row in vals
+                            ],
+                            dtype=bool,
+                        )
+                    )
+                else:
+                    self.pathing_grid = np.invert(
+                        np.flip(
+                            np.transpose(
+                                np.array(
+                                    list(map_info.pathing_grid.data), dtype=bool
+                                ).reshape(self.map_x, self.map_y)
+                            ),
+                            axis=1,
+                        )
+                    )
+
+                self.terrain_height = (
+                    np.flip(
+                        np.transpose(
+                            np.array(list(map_info.terrain_height.data)).reshape(
+                                self.map_x, self.map_y
+                            )
+                        ),
+                        1,
+                    )
+                    / 255
+                )
+                break
+            except:
+                for c in self._controllers:
+                    c.quit()
+                for p in self._sc2_procs:
+                    p.close()
+                portspicker.return_ports(self.ports)
+                self.parallel.shutdown()                
 
     def reset(self):
         """Reset the environment. Required after each full episode.
