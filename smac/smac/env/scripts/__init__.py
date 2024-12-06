@@ -11,7 +11,14 @@ from .s_3s5z.script_1 import DecisionTreeScript as DTS_3s5z_1
 from .s_2s3z.script import DecisionTreeScript as DTS_2s3z
 from .s_2s3z.script_1 import DecisionTreeScript as DTS_2s3z_1
 
-from .s_3s_vs_5z.script import DecisionTreeScript as DTS_3s_vs_5z
+from .s_3s_vs_5z.script_group import DecisionTreeScript as DTS_3s_vs_5z_g
+from .s_3s_vs_5z.script_attack import DecisionTreeScript as DTS_3s_vs_5z_a
+
+from .s_3s_vs_4z.script_group import DecisionTreeScript as DTS_3s_vs_4z_g
+from .s_3s_vs_4z.script_attack import DecisionTreeScript as DTS_3s_vs_4z_a
+
+from .s_3s_vs_3z.script_group import DecisionTreeScript as DTS_3s_vs_3z_g
+from .s_3s_vs_3z.script_attack import DecisionTreeScript as DTS_3s_vs_3z_a
 
 
 from .s_1c3s5z.script import DecisionTreeScript as DTS_1c3s5z
@@ -46,9 +53,9 @@ SCRIPT_DICT = {
     '3s5z': [DTS_3s5z, DTS_3s5z_1],
     '2s3z': [DTS_2s3z, DTS_2s3z_1],
     '3s5z_vs_3s6z': [DTS_3s5z],
-    '3s_vs_3z': [DTS_3s_vs_5z],
-    '3s_vs_4z': [DTS_3s_vs_5z],
-    '3s_vs_5z': [DTS_3s_vs_5z],
+    '3s_vs_3z': [DTS_3s_vs_3z_g, DTS_3s_vs_3z_a],
+    '3s_vs_4z': [DTS_3s_vs_4z_g, DTS_3s_vs_4z_a],
+    '3s_vs_5z': [DTS_3s_vs_5z_g, DTS_3s_vs_5z_a],
     '1c3s5z': [DTS_1c3s5z_m],
     '2m_vs_1z': [DTS_2m_vs_1z],
     '2s_vs_1sc': [DTS_2s_vs_1sc],

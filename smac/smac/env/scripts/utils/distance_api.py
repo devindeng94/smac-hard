@@ -30,8 +30,14 @@ def nearest_n_units(target, candidates, num):
     return sorted(candidates, key=lambda e: distance_to(e, target))[:num]
 
 def toward(us, ut, d):
-    xs, ys = us.pos.x, us.pos.y
-    xt, yt = ut.pos.x, ut.pos.y
+    if isinstance(us, tuple):
+        xs, ys = us
+    else:
+        xs, ys = us.pos.x, us.pos.y
+    if isinstance(ut, tuple):
+        xt, yt = ut
+    else:
+        xt, yt = ut.pos.x, ut.pos.y
     dis = distance_to((xs, ys), (xt, yt))
     return (xs + (xt - xs)/dis*d, ys + (yt - ys)/dis*d)
 

@@ -40,7 +40,7 @@ class DecisionTreeScript():
         # Tacktic 1: Focus fire on one enemy
         if not self.enemy_hydralisk:
             return []
-
+        
 
         for zealot in self.zealots:
             t = self.target[zealot.tag]

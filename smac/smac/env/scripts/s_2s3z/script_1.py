@@ -28,7 +28,7 @@ class DecisionTreeScript():
         
         if not enemy_zealots and not enemy_stalkers:
             return []
-        
+
         if not units:
             return []
 

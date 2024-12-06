@@ -1619,7 +1619,7 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
             d_pb.DebugCommand(kill_unit=d_pb.DebugKillUnit(tag=units_alive))
         ]
         self._controllers[0].debug(debug_command)
-        self._controllers[1].debug(debug_command)
+        #self._controllers[1].debug(debug_command)
 
     def init_units(self):
         """Initialise the units."""
