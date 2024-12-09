@@ -57,7 +57,3 @@ def closer_than(target, candidate, dist):
         if distance_to(c, target) <= dist:
             closer.append(c)
     return closer
-
-def center(units):
-    pos = [[unit.pos.x, unit.pos.y] for unit in units]
-    return [sum(pos[0])/len(units), sum(pos[1])/len(units)]

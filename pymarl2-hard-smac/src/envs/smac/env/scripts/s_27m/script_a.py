@@ -28,15 +28,13 @@ class DecisionTreeScript():
             return self.actions_list
         
         # Move left
-        if min([distance_to(center(marines, em)) for em in enemy_marines]) > 7:
+        if min([distance_to(center(marines), em) for em in enemy_marines]) > 9:
             for marine in marines:
                 self.actions_list.append(move_point(marine, marine.pos.x-2, marine.pos.y))
         else:
             for marine in marines:
-                target = nearest_n_units(marine, enemy_marines, 5)
-                weakest_target = min(target, key=lambda e: e.health)
-
-                self.actions_list.append(attack(marine, weakest_target))
+                
+                self.actions_list.append(attack(marine, center(enemy_marines)))
 
         return self.actions_list
 

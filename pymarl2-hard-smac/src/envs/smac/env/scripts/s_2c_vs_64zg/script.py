@@ -4,29 +4,6 @@ from ..utils.actions_api import *
 from ..utils.units_api import *
 
 from ..unit_typeid import UnitTypeId
-
-class DecisionTreeScript():
-
-    def __init__(self, map_name):
-        self.map_name = map_name
-        
-        self.zealots = []
-        self.ally_list = ['zealots']
-        
-        self.enemy_marines = []
-        self.enemy_list = ['enemy_marines']
-        
-    def script(self, obs, iteration):
-
-        actions_list = []
-        init_unit(obs, self)
-        zealot = self.zealots[0]
-import math
-from ..utils.distance_api import *
-from ..utils.actions_api import *
-from ..utils.units_api import *
-
-from ..unit_typeid import UnitTypeId
 from scipy.spatial.distance import pdist, squareform
 import numpy as np
 
@@ -57,11 +34,7 @@ class DecisionTreeScript():
         
         actions_list = []
         init_unit(obs, self)
-        # 直接攻击测试
-        # for unit in self.zerglings:
-        #     target_enemy = nearest_n_units(unit, self.enemy_colossuses, 1)[0]
-        #     actions_list.append(attack(unit, target_enemy))
-        # return actions_list
+
         
         group_units, group_centers = self.group()
         if self.switch_group(group_units['up_left'], group_units['down_left'], 'left') or self.switch_group(group_units['up_right'], group_units['down_right'], 'right'):
@@ -101,24 +74,6 @@ class DecisionTreeScript():
                 pos = self.positions[group_id][1]
                 for unit in group:
                     actions_list.append(move(unit, pos))
-            
-        
-        # x = [u.pos.x for u in self.zerglings]
-        # y = [u.pos.y for u in self.zerglings]
-        # x1 = [u.pos.x for u in self.enemy_colossuses]
-        # y1 = [u.pos.y for u in self.enemy_colossuses]
-        # import matplotlib.pyplot as plt
-        # plt.scatter(x, y, c='b')
-        # plt.scatter(x1, y1, c='r')
-        # plt.show()
-        # zerglings = sorted([unit for unit in self.zerglings], key=lambda u: u.health)
-        # health_max = sum([z.health_max for z in self.zerglings])
-        # health = sum([z.health for z in self.zerglings])
-        # for z in self.zerglings:
-        #     pos = (z.pos.x, 6)
-        #     actions_list.append(move(z, pos))
-        # if health < health_max:
-        #     print()
         
         return actions_list
     

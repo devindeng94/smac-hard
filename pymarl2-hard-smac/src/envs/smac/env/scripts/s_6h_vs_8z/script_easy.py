@@ -29,8 +29,8 @@ class DecisionTreeScript():
         if not self.enemy_hydralisk:
             return []
         
-        target = self.enemy_hydralisk[0]
-        for z in self.zealots:
-            actions_list.append(attack(z, target))
+        for zealot in self.zealots:
+            target = min(self.enemy_hydralisk, key=lambda e: distance_to(e, zealot))
+            actions_list.append(attack(zealot, target))
 
         return actions_list

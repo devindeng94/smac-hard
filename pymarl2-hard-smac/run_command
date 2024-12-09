@@ -1,11 +1,6 @@
-# 3s5z_vs_3s6z
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=3s5z_vs_3s6z runner=parallel batch_size_run=4 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=3s5z_vs_3s6z runner=parallel batch_size_run=4 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
+CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m obs_agent_id=True obs_last_action=True runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 buffer_cpu_only=False td_lambda=0.6 name=qmix_script seed=1
+CUDA_VISIBLE_DEVICES=1 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m obs_agent_id=True obs_last_action=True runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 buffer_cpu_only=False td_lambda=0.6 name=qmix_script seed=2
+CUDA_VISIBLE_DEVICES=2 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m obs_agent_id=True obs_last_action=True runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 buffer_cpu_only=False td_lambda=0.6 name=qmix_script seed=3
+CUDA_VISIBLE_DEVICES=3 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m obs_agent_id=True obs_last_action=True runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 buffer_cpu_only=False td_lambda=0.6 name=qmix_script seed=4
+CUDA_VISIBLE_DEVICES=4 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m obs_agent_id=True obs_last_action=True runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 buffer_cpu_only=False td_lambda=0.6 name=qmix_script seed=5
 
-# 6h_vs_8z
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=6h_vs_8z runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=500000 batch_size=128 td_lambda=0.3
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=6h_vs_8z runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=500000 batch_size=128 td_lambda=0.3
-
-# other scenarios
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=8m_vs_9m runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-CUDA_VISIBLE_DEVICES=0 python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=8m_vs_9m runner=parallel batch_size_run=8 buffer_size=5000 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6

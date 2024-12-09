@@ -34,7 +34,10 @@ class DecisionTreeScript():
 
         # Baneling attack zerglings.
         for baneling in self.banelings:
-            actions_list.append(attack(baneling, self.find_best_attack_target(self.enemy_zerglings)))
+            target = self.find_best_attack_target(self.enemy_zerglings)
+            if target == None:
+                target = self.find_best_attack_target(enemy_units)
+            actions_list.append(attack(baneling, target))
 
         # Zergling spread out.
         if iteration < 10:

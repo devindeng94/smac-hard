@@ -68,11 +68,3 @@ def move_point(unit, x, y):
             queue_command=False,
         )
     return sc_pb.Action(action_raw=r_pb.ActionRaw(unit_command=cmd)) 
-
-def stop(unit):
-    cmd = r_pb.ActionRawUnitCommand(
-        ability_id=actions["stop"],
-        unit_tags=[unit.tag],
-        queue_command=False,
-    )
-    return sc_pb.Action(action_raw=r_pb.ActionRaw(unit_command=cmd)) 

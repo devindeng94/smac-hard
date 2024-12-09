@@ -459,7 +459,10 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
             self.heuristic_targets_list = [[None] * self.n_agents_list[i] for i in range(self.players)]
 
         try:
-            self._obs_list = [self._controllers[i].observe() for i in range(self.players)]
+            #self._obs_list = [self._controllers[i].observe() for i in range(self.players)]
+            obs = self.parallel.run(c.observe for c in self._controllers)
+            self._obs_list = [obs[0], obs[1]]
+            
             self.init_units()
         except (protocol.ProtocolError, protocol.ConnectionError):
             self.full_restart()
@@ -571,8 +574,8 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
             #self._controllers[0].step(self._step_mul)
             #self._controllers[1].step(self._step_mul)
             # Observe here so that we know if the episode is over.
-            self._obs_list.append(self._controllers[0].observe())
-            self._obs_list.append(self._controllers[1].observe())
+            obs = self.parallel.run(c.observe for c in self._controllers)
+            self._obs_list = [obs[0], obs[1]]
             # for req_action, controller in zip(all_actions, self._controllers):
             #     controller.actions(req_action)
             #     controller.step(self._step_mul)
@@ -1680,7 +1683,8 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
                 # self._controllers[0].step(1)
                 # self._controllers[1].step(1)
                 self.parallel.run((c.step, 1) for c in self._controllers)
-                self._obs_list = [self._controllers[0].observe(), self._controllers[1].observe()]
+                obs = self.parallel.run(c.observe for c in self._controllers)
+                self._obs_list = [obs[0], obs[1]]
             except (protocol.ProtocolError, protocol.ConnectionError):
                 self.full_restart()
                 self.reset()
@@ -1801,17 +1805,7 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         return self.agents_dict_list[player_id]['agents'][a_id]
 
     def get_stats(self):
-        if self.mode == 'single':
-            stats = {
-                "battles_won": self.battles_won[0],
-                "battles_game": self.battles_game,
-                "battles_draw": self.timeouts,
-                "win_rate": self.battles_won[0] / self.battles_game,
-                "timeouts": self.timeouts,
-                "restarts": self.force_restarts,
-            }
-        else:
-            stats = {
+        stats = {
             "battles_won": self.battles_won,
             "battles_game": self.battles_game,
             "battles_draw": self.timeouts,
