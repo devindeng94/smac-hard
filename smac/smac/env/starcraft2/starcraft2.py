@@ -430,12 +430,15 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
                 )
                 break
             except:
-                for c in self._controllers:
-                    c.quit()
-                for p in self._sc2_procs:
-                    p.close()
+                if self._controllers != None:
+                    for c in self._controllers:
+                        c.quit()
+                if self._sc2_procs != None:
+                    for p in self._sc2_procs:
+                        p.close()
                 portspicker.return_ports(self.ports)
-                self.parallel.shutdown()                
+                self.parallel.shutdown()
+              
 
     def reset(self):
         """Reset the environment. Required after each full episode.
