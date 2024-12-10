@@ -1808,7 +1808,17 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         return self.agents_dict_list[player_id]['agents'][a_id]
 
     def get_stats(self):
-        stats = {
+        if self.mode == 'single':
+            stats = {
+                "battles_won": self.battles_won[0],
+                "battles_game": self.battles_game,
+                "battles_draw": self.timeouts,
+                "win_rate": self.battles_won[0] / self.battles_game,
+                "timeouts": self.timeouts,
+                "restarts": self.force_restarts,
+            }
+        else:
+            stats = {
             "battles_won": self.battles_won,
             "battles_game": self.battles_game,
             "battles_draw": self.timeouts,
