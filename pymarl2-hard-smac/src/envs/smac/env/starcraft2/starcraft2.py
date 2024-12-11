@@ -3,8 +3,10 @@ from __future__ import division
 from __future__ import print_function
 import os
 
-from smac.env.multiplayer_multiagentenv import MultiPlayer_MultiAgentEnv
-from smac.env.starcraft2.maps import get_map_params
+from ..multiplayer_multiagentenv import MultiPlayer_MultiAgentEnv
+from ..starcraft2.maps import get_map_params
+#from smac.env.multiplayer_multiagentenv import MultiPlayer_MultiAgentEnv
+#from smac.env.starcraft2.maps import get_map_params
 
 import atexit
 import random
@@ -1608,8 +1610,8 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
 
     def render(self, mode="human"):
         if self.renderer is None:
-            from smac.env.starcraft2.render import StarCraft2Renderer
-
+            from .render import StarCraft2Renderer
+            
             self.renderer = StarCraft2Renderer(self, mode)
         assert (
             mode == self.renderer.mode
