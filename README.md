@@ -220,6 +220,8 @@ CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qmix --env-config=sc2 with 
 CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=other_scenarios runner=parallel batch_size_run=8 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
 ~~~
 
+The MAPPO and HAPPO are from the codebase [on-policy](https://github.com/marlbenchmark/on-policy) and the hyper-parameters are provided by the official scripts.
+
 # Citing  SMAC-HARD 
 
 If you use SMAC in your research, please cite the [SMAC-HARD paper](xxxxxx).
