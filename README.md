@@ -35,7 +35,7 @@ Please use the Blizzard's [repository](https://github.com/Blizzard/s2client-prot
 
 Please install StarCraft II from [Battle.net](https://battle.net). The free [Starter Edition](http://battle.net/sc2/en/legacy-of-the-void/) also works. PySC2 will find the latest binary should you use the default install location. Otherwise, similar to the Linux version, you would need to set the `SC2PATH` environment variable with the correct location of the game.
 
-**It is worth noting that the Linux version of StarCraftII binary is version 4.10 and the MacOS/Windows version always follow the latest version (5.0.14 currently), which may results in incompatible performances. For example, the health value of hydralisk is 80 in 4.10 version but 90 in 5.0.14 version, which may significantly influence the difficulty of 6h\_vs\_8z scenario.**
+**It is worth noting that the Linux version of StarCraftII binary is version 4.10 and the MacOS/Windows version always follows the latest version (5.0.14 currently), which may result in incompatible performances. For example, the health value of hydralisk is 80 in 4.10 version but 90 in 5.0.14 version, which may significantly influence the difficulty of the 6h\_vs\_8z scenario.**
 
 ## SMAC-HARD maps
 
@@ -79,6 +79,7 @@ You may apply our proposed SMAC-HARD to your codebase by simply replace 'smac' b
 
 
 ```python
+#from smac.env import StarCraft2Env
 from smac_hard.env import StarCraft2Env
 import numpy as np
 
@@ -115,9 +116,38 @@ def main():
     env.close()
 
 ```
+### Mixed Opponent Strategy mode at 10M time steps
+
+| SMAC-HARD          | QMIX   | QPLEX  | LDSA   | MAPPO  | HAPPO  |
+|--------------------|--------|--------|--------|--------|--------|
+| 3m                 | 0.9938 | 0.0438 | **1**      | **1**      | 0.4375 |
+| 8m                 | 0.9628 | 0.0875 | **0.9687** | 0.6438 | 0.8625 |
+| 5m\_vs\_6m         | 0.4375 | **0.6188** | 0.4    | 0.3138 | 0.004  |
+| 8m\_vs\_9m         | 0.4938 | 0      | **0.7187** | 0.3528 | 0.5006 |
+| 10m\_vs\_11m       | **0.6813** | 0      | 0.625  | 0.5681 | 0.5672 |
+| 25m                | **0.7813** | 0      | 0.4375 | 0.4562 | 0.2092 |
+| 27m\_vs\_30m       | 0.0313 | 0      | **0.125**  | 0.0938 | 0.0063 |
+| 2s3z               | 0.4125 | 0.4313 | 0.7737 | **0.8735** | 0.7547 |
+| 3s5z               | 0.3625 | 0.1063 | 0.1876 | **0.7225** | 0.6691 |
+| 3s5z\_vs\_3s6z     | 0      | 0      | 0.1319 | 0.1569 | **0.2573** |
+| 1c3s5z             | 0.9625 | 0.7563 | 0.9375 | 0.5445 | **0.975**  |
+| 3s\_vs\_3z         | 0.9913 | 0.9875 | **1**      | 0.9875 | 0.4875 |
+| 3s\_vs\_4z         | 0.7938 | 0.7938 | 0.7815 | **0.9875** | 0.15   |
+| 3s\_vs\_5z         | 0.3438 | 0.5    | 0.875  | **0.9407** | 0      |
+| bane\_vs\_bane     | 0.975  | 0.2313 | 0.8229 | **0.9125** | 0      |
+| so\_many\_baneling | **0.9625** | 0.5938 | 0.875  | 0.8813 | 0.9188 |
+| 2s\_vs\_1sc        | 0.7563 | **0.8875** | 0.4375 | 0.8375 | 0      |
+| 2m\_vs\_1z         | 0      | 0      | 0      | 0      | 0      |
+| 2c\_vs\_64zg       | 0.7891 | 0.5    | 0.9062 | **0.9741** | 0.7686 |
+| MMM                | **0.9875** | 0.95   | 0.875  | 0.3267 | 0.8813 |
+| MMM2               | 0.275  | 0.0006 | **0.5312** | 0.1925 | 0.0425 |
+| 6h\_vs\_8z         | 0.0188 | 0      | **0.0625** | 0.0607 | 0      |
+| corridor           | **0.3063** | 0.1688 | 0      | 0.1804 | 0      |
+
+
 ## MARL Self-Play mode
 
-In the self-play mode, two players controlled by agents are inserted, which means observations, states and other interfaces should be acquired for agent (red) and opponent (blue) seperately. Therefore, to start the self-play mode, the 'mode=multi' parameter should be passed into the StarCraft2Env class and the 'player\_id=0' and 'player\_id=1' are taken as parameters. Consequently, the rewards, terminateds, and infos are returned as a list with two variables.
+In the self-play mode, two players controlled by agents are inserted, which means observations, states, and other interfaces should be acquired for agent (red) and opponent (blue) separately. Therefore, to start the self-play mode, the 'mode=multi' parameter should be passed into the StarCraft2Env class and the 'player\_id=0' and 'player\_id=1' are taken as parameters. Consequently, the rewards, terminateds, and infos are returned as a list with two variables.
 
 ```python
 from smac_hard.env import StarCraft2Env
@@ -177,34 +207,35 @@ def main():
 ```
 
 
-### Experimental results
+### Black-box evaluation mode at 10M time steps
 
-| SMAC-HARD          | QMIX   | QPLEX  | LDSA   | MAPPO  | HAPPO  |
-|--------------------|--------|--------|--------|--------|--------|
-| 3m                 | 0.9938 | 0.0438 | **1**      | **1**      | 0.4375 |
-| 8m                 | 0.9628 | 0.0875 | **0.9687** | 0.6438 | 0.8625 |
-| 5m\_vs\_6m         | 0.4375 | **0.6188** | 0.4    | 0.3138 | 0.004  |
-| 8m\_vs\_9m         | 0.4938 | 0      | **0.7187** | 0.3528 | 0.5006 |
-| 10m\_vs\_11m       | **0.6813** | 0      | 0.625  | 0.5681 | 0.5672 |
-| 25m                | **0.7813** | 0      | 0.4375 | 0.4562 | 0.2092 |
-| 27m\_vs\_30m       | 0.0313 | 0      | **0.125**  | 0.0938 | 0.0063 |
-| 2s3z               | 0.4125 | 0.4313 | 0.7737 | **0.8735** | 0.7547 |
-| 3s5z               | 0.3625 | 0.1063 | 0.1876 | **0.7225** | 0.6691 |
-| 3s5z\_vs\_3s6z     | 0      | 0      | 0.1319 | 0.1569 | **0.2573** |
-| 1c3s5z             | 0.9625 | 0.7563 | 0.9375 | 0.5445 | **0.975**  |
-| 3s\_vs\_3z         | 0.9913 | 0.9875 | **1**      | 0.9875 | 0.4875 |
-| 3s\_vs\_4z         | 0.7938 | 0.7938 | 0.7815 | **0.9875** | 0.15   |
-| 3s\_vs\_5z         | 0.3438 | 0.5    | 0.875  | **0.9407** | 0      |
-| bane\_vs\_bane     | 0.975  | 0.2313 | 0.8229 | **0.9125** | 0      |
-| so\_many\_baneling | **0.9625** | 0.5938 | 0.875  | 0.8813 | 0.9188 |
-| 2s\_vs\_1sc        | 0.7563 | **0.8875** | 0.4375 | 0.8375 | 0      |
-| 2m\_vs\_1z         | 0      | 0      | 0      | 0      | 0      |
-| 2c\_vs\_64zg       | 0.7891 | 0.5    | 0.9062 | **0.9741** | 0.7686 |
-| MMM                | **0.9875** | 0.95   | 0.875  | 0.3267 | 0.8813 |
-| MMM2               | 0.275  | 0.0006 | **0.5312** | 0.1925 | 0.0425 |
-| 6h\_vs\_8z         | 0.0188 | 0      | **0.0625** | 0.0607 | 0      |
-| corridor           | **0.3063** | 0.1688 | 0      | 0.1804 | 0      |
+| SMAC-HARD        | QMIX   | QPLEX  | MAPPO  | HAPPO  |
+|------------------|--------|--------|--------|--------|
+| 3m               | 0.0117 | 0.0898 | 0.1028 | 0.0573 |
+| 8m               | 0.0375 | 0      | 0.0513 | 0.1217 |
+| 5m_vs_6m         | 0      | 0      | 0      | 0      |
+| 8m_vs_9m         | 0      | 0      | 0      | 0      |
+| 10m_vs_11m       | 0      | 0      | 0      | 0      |
+| 25m              | 0      | 0      | 0      | 0      |
+| 27m_vs_30m       | 0      | 0      | 0      | 0      |
+| 2s3z             | 0.0508 | 0      | 0.1217 | 0.0959 |
+| 3s5z             | 0.0313 | 0      | 0.0375 | 0.0705 |
+| 3s5z_vs_3s6z     | 0      | 0      | 0      | 0      |
+| 1c3s5z           | 0.0703 | 0      | 0.1027 | 0.0912 |
+| 3s_vs_3z         | 0.3359 | 0.3555 | 0.4125 | 0.3724 |
+| 3s_vs_4z         | 0.7461 | 0.5052 | 0.4467 | 0      |
+| 3s_vs_5z         | 0.5305 | 0.8573 | 0.5359 | 0      |
+| bane_vs_bane     | 0.2578 | 0      | 0.3484 | 0      |
+| so_many_baneling | 0      | 0      | 0      | 0      |
+| 2s_vs_1sc        | 0      | 0      | 0      | 0      |
+| 2m_vs_1z         | 0      | 0      | 0      | 0      |
+| 2c_vs_64zg       | 0.6238 | 0      | 0.3419 | 0.2565 |
+| MMM              | 0      | 0      | 0      | 0      |
+| MMM2             | 0      | 0      | 0      | 0      |
+| 6h_vs_8z         | 0.0898 | 0      | 0      | 0      |
+| corridor         | 0      | 0      | 0      | 0      |
 
+(The experiments on LDSA is still running)
 The codebase for generating the QMIX, QPLEX results above is [pymarl2](https://github.com/hijkzzz/pymarl2). We also follow the hyper-parameters described in [pymarl3](https://github.com/tjuHaoXiaotian/pymarl3).
 ~~~
 # 3s5z_vs_3s6z
@@ -224,10 +255,18 @@ The MAPPO and HAPPO are from the codebase [on-policy](https://github.com/marlben
 
 # Citing  SMAC-HARD 
 
-If you use SMAC in your research, please cite the [SMAC-HARD paper](xxxxxx).
+If you use SMAC in your research, please cite the [SMAC-HARD paper](https://arxiv.org/abs/2412.17707).
 
 In BibTeX format:
 
 ```tex
-comming soon ^_^
+@misc{deng2024smachardenablingmixedopponent,
+      title={SMAC-Hard: Enabling Mixed Opponent Strategy Script and Self-play on SMAC}, 
+      author={Yue Deng and Yan Yu and Weiyu Ma and Zirui Wang and Wenhui Zhu and Jian Zhao and Yin Zhang},
+      year={2024},
+      eprint={2412.17707},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2412.17707}, 
+}
 ```
