@@ -236,6 +236,7 @@ def main():
 | corridor         | 0      | 0      | 0      | 0      |
 
 (The experiments on LDSA is still running)
+
 The codebase for generating the QMIX, QPLEX results above is [pymarl2](https://github.com/hijkzzz/pymarl2). We also follow the hyper-parameters described in [pymarl3](https://github.com/tjuHaoXiaotian/pymarl3).
 ~~~
 # 3s5z_vs_3s6z
