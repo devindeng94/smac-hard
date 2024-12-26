@@ -955,7 +955,7 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
                         delta_enemy[p] += prev_health - e_unit.health - e_unit.shield
 
             if self.reward_only_positive:
-                rewards[p] = abs(delta_enemy[p] + delta_deaths[p])  # shield regeneration
+                rewards[p] = max(0, delta_enemy[p] + delta_deaths[p])  # shield regeneration
             else:
                 rewards[p] = delta_enemy[p] + delta_deaths[p] - delta_ally[p]
 
