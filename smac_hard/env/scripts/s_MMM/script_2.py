@@ -69,10 +69,11 @@ class DecisionTreeScript():
         
             if self.pre_health[m.tag] > self.cur_health[m.tag] and m.health/m.health_max < 0.3:
                 actions_list.append(move(m, (m.pos.x+1, m.pos.y)))
-            else:    
-                target = nearest_n_units(m, enemies, 1)[0]
-                if target:
-                    actions_list.append(attack(m, target))
+            else:
+                if enemies:    
+                    target = nearest_n_units(m, enemies, 1)[0]
+                    if target:
+                        actions_list.append(attack(m, target))
 
 
         # Define front line
@@ -84,10 +85,10 @@ class DecisionTreeScript():
 
         for m in self.marauders:
             if m.pos.x < front_line[0]:
-                
-                target = nearest_n_units(m, self.enemy_marines + self.enemy_marauders, 1)[0]
-                if target:
-                    actions_list.append(attack(m, target))
+                if self.enemy_marines + self.enemy_marauders:
+                    target = nearest_n_units(m, self.enemy_marines + self.enemy_marauders, 1)[0]
+                    if target:
+                        actions_list.append(attack(m, target))
             else:
                 actions_list.append(move(m, (front_line[0], m.pos.y)))
                 

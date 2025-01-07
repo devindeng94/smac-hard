@@ -1,15 +1,14 @@
 from smac_hard.env import StarCraft2Env
 import numpy as np
 
-'''
 def main():
-    env = StarCraft2Env(map_name="8m")
+    env = StarCraft2Env(map_name="MMM")
     env_info = env.get_env_info()
 
     n_actions = env_info["n_actions"]
     n_agents = env_info["n_agents"]
 
-    n_episodes = 5
+    n_episodes = 50
 
     for e in range(n_episodes):
         env.reset()
@@ -86,7 +85,7 @@ def main():
         print("Total reward in episode {} = {} and {}".format(e, red_episode_reward, blue_episode_reward))
 
     env.close()
-
+'''
 if __name__ == '__main__':
 
     main()
