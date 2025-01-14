@@ -1,0 +1,167 @@
+[INFO 16:27:08] pymarl Running command 'my_main'
+[INFO 16:27:08] pymarl Started run with ID "1"
+[DEBUG 16:27:08] pymarl Starting Heartbeat
+[DEBUG 16:27:08] my_main Started
+[WARNING 16:27:08] my_main CUDA flag use_cuda was switched OFF automatically because no CUDA devices are available!
+[INFO 16:27:08] my_main Experiment Parameters:
+[INFO 16:27:08] my_main 
+
+{   'action_selector': 'epsilon_greedy',
+    'agent': 'n_rnn',
+    'agent_output_type': 'q',
+    'batch_size': 128,
+    'batch_size_run': 1,
+    'buffer_cpu_only': True,
+    'buffer_size': 5000,
+    'checkpoint_path': '',
+    'critic_lr': 0.0005,
+    'env': 'sc2',
+    'env_args': {   'continuing_episode': False,
+                    'debug': False,
+                    'difficulty': '7',
+                    'game_version': None,
+                    'heuristic_ai': False,
+                    'heuristic_rest': False,
+                    'map_name': '5m_vs_6m',
+                    'move_amount': 2,
+                    'obs_all_health': True,
+                    'obs_instead_of_state': False,
+                    'obs_last_action': False,
+                    'obs_own_health': True,
+                    'obs_pathing_grid': False,
+                    'obs_terrain_height': False,
+                    'obs_timestep_number': False,
+                    'replay_dir': '',
+                    'replay_prefix': '',
+                    'reward_death_value': 10,
+                    'reward_defeat': 0,
+                    'reward_negative_scale': 0.5,
+                    'reward_only_positive': True,
+                    'reward_scale': True,
+                    'reward_scale_rate': 20,
+                    'reward_sparse': False,
+                    'reward_win': 200,
+                    'seed': 537011191,
+                    'state_last_action': True,
+                    'state_timestep_number': False,
+                    'step_mul': 8},
+    'epsilon_anneal_time': 100000,
+    'epsilon_finish': 0.05,
+    'epsilon_start': 1.0,
+    'evaluate': False,
+    'gain': 0.01,
+    'gamma': 0.99,
+    'grad_norm_clip': 10,
+    'hypernet_embed': 64,
+    'label': 'default_label',
+    'learner': 'nq_learner',
+    'learner_log_interval': 80000,
+    'load_step': 0,
+    'local_results_path': 'results',
+    'log_interval': 80000,
+    'lr': 0.001,
+    'mac': 'n_mac',
+    'mixer': 'qmix',
+    'mixing_embed_dim': 32,
+    'name': 'qmix_env=8_adam_td_lambda',
+    'obs_agent_id': True,
+    'obs_last_action': True,
+    'optim_alpha': 0.99,
+    'optim_eps': 1e-05,
+    'optimizer': 'adam',
+    'per_alpha': 0.6,
+    'per_beta': 0.4,
+    'q_lambda': False,
+    'repeat_id': 1,
+    'return_priority': False,
+    'rnn_hidden_dim': 64,
+    'run': 'default',
+    'runner': 'episode',
+    'runner_log_interval': 80000,
+    'save_model': False,
+    'save_model_interval': 2000000,
+    'save_replay': False,
+    'seed': 537011191,
+    't_max': 10050000,
+    'target_update_interval': 200,
+    'td_lambda': 0.6,
+    'test_greedy': True,
+    'test_interval': 80000,
+    'test_nepisode': 32,
+    'use_cuda': False,
+    'use_layer_norm': False,
+    'use_orthogonal': False,
+    'use_per': False,
+    'use_tensorboard': False,
+    'use_wandb': False}
+
+Mixer Size: 
+31.521K
+[INFO 16:27:09] my_main Beginning training for 10050000 timesteps
+[INFO 16:27:09] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52115 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-7gvsv3v1/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:09] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 0, running: True
+[INFO 16:27:10] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 1, running: True
+[INFO 16:27:11] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 2, running: True
+[INFO 16:27:12] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 3, running: True
+[INFO 16:27:13] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 4, running: True
+[INFO 16:27:14] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 5, running: True
+[INFO 16:27:15] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 6, running: True
+[INFO 16:27:16] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 7, running: True
+[INFO 16:27:17] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 8, running: True
+[INFO 16:27:18] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 9, running: True
+[INFO 16:27:19] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 10, running: True
+[INFO 16:27:20] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 11, running: True
+[INFO 16:27:21] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 12, running: True
+[INFO 16:27:22] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 13, running: True
+[INFO 16:27:23] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 14, running: True
+[INFO 16:27:24] absl Connecting to: ws://127.0.0.1:52115/sc2api, attempt: 15, running: True
+[INFO 16:27:24] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52292 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-ug8maw3u/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:24] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 0, running: True
+[INFO 16:27:25] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 1, running: True
+[INFO 16:27:26] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 2, running: True
+[INFO 16:27:27] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 3, running: True
+[INFO 16:27:28] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 4, running: True
+[INFO 16:27:29] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 5, running: True
+[INFO 16:27:30] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 6, running: True
+[INFO 16:27:31] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 7, running: True
+[INFO 16:27:32] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 8, running: True
+[INFO 16:27:33] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 9, running: True
+[INFO 16:27:34] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 10, running: True
+[INFO 16:27:35] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 11, running: True
+[INFO 16:27:36] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 12, running: True
+[INFO 16:27:37] absl Connecting to: ws://127.0.0.1:52292/sc2api, attempt: 13, running: True
+[INFO 16:27:37] absl Shutdown gracefully.
+[INFO 16:27:37] absl Shutdown with return code: -15
+[INFO 16:27:38] absl Shutdown gracefully.
+[INFO 16:27:38] absl Shutdown with return code: -15
+[INFO 16:27:38] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52460 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-ozu_mdzj/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:38] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 0, running: True
+[INFO 16:27:39] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 1, running: True
+[INFO 16:27:40] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 2, running: True
+[INFO 16:27:41] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 3, running: True
+[INFO 16:27:42] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 4, running: True
+[INFO 16:27:43] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 5, running: True
+[INFO 16:27:44] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 6, running: True
+[INFO 16:27:45] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 7, running: True
+[INFO 16:27:46] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 8, running: True
+[INFO 16:27:47] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 9, running: True
+[INFO 16:27:48] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 10, running: True
+[INFO 16:27:49] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 11, running: True
+[INFO 16:27:50] absl Connecting to: ws://127.0.0.1:52460/sc2api, attempt: 12, running: True
+[INFO 16:27:50] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52594 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-1k8h_loo/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:50] absl Connecting to: ws://127.0.0.1:52594/sc2api, attempt: 0, running: True
+[INFO 16:27:51] absl Connecting to: ws://127.0.0.1:52594/sc2api, attempt: 1, running: True
+[INFO 16:27:52] absl Connecting to: ws://127.0.0.1:52594/sc2api, attempt: 2, running: True
+[INFO 16:27:53] absl Shutdown gracefully.
+[INFO 16:27:53] absl Shutdown with return code: -15
+[INFO 16:27:53] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52634 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-8ytdo7ne/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:53] absl Connecting to: ws://127.0.0.1:52634/sc2api, attempt: 0, running: True
+[INFO 16:27:54] absl Connecting to: ws://127.0.0.1:52634/sc2api, attempt: 1, running: True
+[INFO 16:27:54] absl Shutdown gracefully.
+[INFO 16:27:54] absl Shutdown with return code: -15
+[INFO 16:27:54] absl Launching SC2: /Applications/StarCraft II/Versions/Base93333/SC2.app/Contents/MacOS/SC2 -listen 127.0.0.1 -port 52653 -dataDir /Applications/StarCraft II/ -tempDir /var/folders/3t/8ytz1_7s1db5mp61cjc4lnd40000gn/T/sc-bh631gus/ -displayMode 0 -windowwidth 640 -windowheight 480 -windowx 50 -windowy 50
+[INFO 16:27:54] absl Connecting to: ws://127.0.0.1:52653/sc2api, attempt: 0, running: True
+[INFO 16:27:55] absl Connecting to: ws://127.0.0.1:52653/sc2api, attempt: 1, running: True
+[INFO 16:27:56] absl Connecting to: ws://127.0.0.1:52653/sc2api, attempt: 2, running: True
+[INFO 16:27:57] absl Connecting to: ws://127.0.0.1:52653/sc2api, attempt: 3, running: True
+[INFO 16:27:58] absl Connecting to: ws://127.0.0.1:52653/sc2api, attempt: 4, running: True

@@ -1,0 +1,85 @@
+{
+  "artifacts": [],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "/Users/devin/Downloads/pymarl2-hard-smac/src",
+    "dependencies": [
+      "numpy==1.26.4",
+      "PyYAML==6.0",
+      "sacred==0.8.7",
+      "torch==2.2.2"
+    ],
+    "mainfile": "main.py",
+    "name": "pymarl",
+    "repositories": [],
+    "sources": [
+      [
+        "main.py",
+        "_sources/main_c81c42f92f361e97dc35e2cb9570b67c.py"
+      ],
+      [
+        "utils/logging.py",
+        "_sources/logging_695baef854ed7dc5f685e13da53558e5.py"
+      ]
+    ]
+  },
+  "heartbeat": "2025-01-14T09:07:51.643969",
+  "host": {
+    "ENV": {},
+    "cpu": "Apple M1",
+    "hostname": "MacBook-Pro.local",
+    "os": [
+      "Darwin",
+      "macOS-10.16-x86_64-i386-64bit"
+    ],
+    "python_version": "3.11.0"
+  },
+  "meta": {
+    "command": "my_main",
+    "config_updates": {
+      "batch_size_run": 1,
+      "env_args": {
+        "map_name": "5m_vs_6m"
+      },
+      "runner": "episode",
+      "use_wandb": false
+    },
+    "named_configs": [],
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--id": null,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [
+        "env_args.map_name=5m_vs_6m",
+        "runner=episode",
+        "batch_size_run=1",
+        "use_wandb=False"
+      ],
+      "help": false,
+      "with": true
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2025-01-14T08:29:03.502653",
+  "status": "INTERRUPTED",
+  "stop_time": "2025-01-14T09:07:51.648441"
+}
