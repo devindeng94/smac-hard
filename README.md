@@ -253,3 +253,22 @@ CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qplex --env-config=sc2 with
 ~~~
 
 The MAPPO and HAPPO are from the codebase [on-policy](https://github.com/marlbenchmark/on-policy) and the hyper-parameters are provided by the official scripts.
+
+# Citing  SMAC-HARD 
+
+If you use SMAC in your research, please cite the [SMAC-HARD paper](https://arxiv.org/abs/2412.17707).
+
+In BibTeX format:
+
+```tex
+@misc{deng2024smachardenablingmixedopponent,
+      title={SMAC-Hard: Enabling Mixed Opponent Strategy Script and Self-play on SMAC}, 
+      author={Yue Deng and Yan Yu and Weiyu Ma and Zirui Wang and Wenhui Zhu and Jian Zhao and Yin Zhang},
+      year={2024},
+      eprint={2412.17707},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2412.17707}, 
+}
+```
+
