@@ -325,6 +325,7 @@ class StarCraft2Env(MultiPlayer_MultiAgentEnv):
         # Try to avoid leaking SC2 processes on shutdown
         atexit.register(lambda: self.close())
 
+
     def _launch(self):
         """Launch the StarCraft II game."""
         

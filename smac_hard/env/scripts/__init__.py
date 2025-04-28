@@ -1,7 +1,6 @@
 from .s_3m.script import DecisionTreeScript as DTS_3m
 from .s_8m.script import DecisionTreeScript as DTS_8m
 from .s_8m.script_1 import DecisionTreeScript as DTS_8m_1
-from .s_8m.script_2 import DecisionTreeScript as DTS_8m_2
 from .s_27m.script_l import DecisionTreeScript as DTS_27m_l
 from .s_27m.script_a import DecisionTreeScript as DTS_27m_a
 from .s_27m.script_ap import DecisionTreeScript as DTS_27m_ap
@@ -41,33 +40,35 @@ from .s_corridor.script_y import DecisionTreeScript as DTS_corridor_y
 from .s_bane_vs_bane.script import DecisionTreeScript as DTS_bane_vs_bane
 from .s_2c_vs_64zg.script import DecisionTreeScript as DTS_2c_vs_64zg
 
+from .base_script import DecisionTreeScript as base
+
 
 
 SCRIPT_DICT = {
 
-    '3m': [DTS_3m],
-    '8m': [DTS_8m, DTS_8m_1, DTS_8m_2],
-    '5m_vs_6m': [DTS_8m, DTS_8m_1, DTS_8m_2],
-    '8m_vs_9m': [DTS_8m, DTS_8m_1, DTS_8m_2],
-    '10m_vs_11m': [DTS_8m, DTS_8m_1, DTS_8m_2],
-    '25m': [DTS_27m_l, DTS_27m_a, DTS_27m_ap],
-    '27m_vs_30m': [DTS_27m_l, DTS_27m_a, DTS_27m_ap],
-    '3s5z': [DTS_3s5z, DTS_3s5z_1],
-    '2s3z': [DTS_2s3z, DTS_2s3z_1],
-    '3s5z_vs_3s6z': [DTS_3s5z],
-    '3s_vs_3z': [DTS_3s_vs_3z_g, DTS_3s_vs_3z_a],
-    '3s_vs_4z': [DTS_3s_vs_4z_g, DTS_3s_vs_4z_a],
-    '3s_vs_5z': [DTS_3s_vs_5z_g, DTS_3s_vs_5z_a],
-    '1c3s5z': [DTS_1c3s5z_m],
-    '2m_vs_1z': [DTS_2m_vs_1z],
-    '2s_vs_1sc': [DTS_2s_vs_1sc],
-    'MMM': [DTS_MMM, DTS_MMM_2],
-    'MMM2': [DTS_MMM, DTS_MMM_2],
-    'so_many_baneling': [DTS_so_many_baneling],
+    '3m': [DTS_8m, base],
+    '8m': [DTS_8m, DTS_8m_1, base],
+    '5m_vs_6m': [DTS_8m, DTS_8m_1, base],
+    '8m_vs_9m': [DTS_8m, DTS_8m_1, base],
+    '10m_vs_11m': [DTS_8m, DTS_8m_1, base],
+    '25m': [DTS_27m_l, DTS_27m_a, DTS_27m_ap, base],
+    '27m_vs_30m': [DTS_27m_l, DTS_27m_a, DTS_27m_ap, base],
+    '3s5z': [DTS_3s5z, DTS_3s5z_1, base],
+    '2s3z': [DTS_2s3z, DTS_2s3z_1, base],
+    '3s5z_vs_3s6z': [DTS_3s5z, base],
+    '3s_vs_3z': [DTS_3s_vs_3z_g, DTS_3s_vs_3z_a, base],
+    '3s_vs_4z': [DTS_3s_vs_4z_g, DTS_3s_vs_4z_a, base],
+    '3s_vs_5z': [DTS_3s_vs_5z_g, DTS_3s_vs_5z_a, base],
+    '1c3s5z': [DTS_1c3s5z_m, base],
+    '2m_vs_1z': [DTS_2m_vs_1z, base],
+    '2s_vs_1sc': [DTS_2s_vs_1sc, base],
+    'MMM': [DTS_MMM, DTS_MMM_2, base],
+    'MMM2': [DTS_MMM, DTS_MMM_2, base],
+    'so_many_baneling': [DTS_so_many_baneling, base],
     '6h_vs_8z': [DTS_6h_vs_8z_e, DTS_6h_vs_8z_h],
-    'corridor': [DTS_corridor_d, DTS_corridor_y],
-    'bane_vs_bane': [DTS_bane_vs_bane],
-    '2c_vs_64zg': [DTS_2c_vs_64zg]
+    'corridor': [DTS_corridor_d, DTS_corridor_y, base],
+    'bane_vs_bane': [DTS_bane_vs_bane, base],
+    '2c_vs_64zg': [DTS_2c_vs_64zg, base]
 }
 
 TEST_SCRIPT_DICT = {
