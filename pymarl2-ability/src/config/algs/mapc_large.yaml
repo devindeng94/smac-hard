@@ -1,0 +1,54 @@
+# --- MAPC specific parameters ---
+
+# use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 500000
+
+runner: "parallel"
+batch_size_run: 4
+buffer_size: 5000
+batch_size: 128
+optimizer: 'adam'
+
+t_max: 10050000
+# update the target network every {} episodes
+target_update_interval: 200
+
+# use the Q_Learner to train
+agent_output_type: "q"
+learner: "mapc_learner"
+double_q: True
+mixer: "qmix"
+mixing_embed_dim: 64
+hypernet_embed: 256
+
+rnn_hidden_dim: 256
+lr: 0.001
+
+
+
+name: "mapc"
+
+agent: "mapc"
+mac: "mapc_mac"
+
+n_policies: 2
+policy_embed_dim: 16
+
+oppo_hidden_dim: 256
+vae_k: 16
+kld_weight: 0.00025
+
+sft_way: "gumbel_softmax" #softmax or gumbel_softmax
+lambda_subtask_prob: 0.001
+lambda_subtask_repr: 0.001
+subtask_policy_use_hypernet: True
+use_tanh: True
+subtask_repr_layers: 2
+random_sele: False # select a subtask randomly if True
+
+vae_lambda : 0.1
+td_lambda: 0.6
+use_wandb: True

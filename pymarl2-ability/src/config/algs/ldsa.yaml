@@ -1,0 +1,41 @@
+# --- LDSA specific parameters ---
+
+# use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+epsilon_anneal_time: 500000
+
+runner: "parallel"
+batch_size_run: 8
+batch_siz: 128
+
+buffer_size: 5000
+
+# update the target network every {} episodes
+target_update_interval: 200
+
+hidden_dim: 16
+# use the Q_Learner to train
+agent_output_type: "q"
+learner: "ldsa_learner"
+double_q: True
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_layers: 2
+hypernet_embed: 64
+
+name: "ldsa"
+
+agent: "ldsa"
+mac: "ldsa_mac"
+n_subtasks: 4
+agent_subtask_embed_dim: 64
+sft_way: "gumbel_softmax" #softmax or gumbel_softmax
+test_argmax: True
+lambda_subtask_prob: 0.001
+lambda_subtask_repr: 0.001
+subtask_policy_use_hypernet: True
+use_tanh: True
+subtask_repr_layers: 2
+random_sele: False # select a subtask randomly if True
