@@ -10,28 +10,29 @@ class DecisionTreeScript():
 
     def __init__(self, map_name):
         self.map_name = map_name
-        
-        self.marines = []
-        self.marauders = []
-        self.medivacs = []
-        self.ally_list = ['marines', 'marauders', 'medivacs']
-        
-        self.enemy_marines = []
-        self.enemy_marauders = []
-        self.enemy_medivacs = []
-        self.enemy_list = ['enemy_marauders', 'enemy_marines', 'enemy_medivacs']
 
         self.init = True
         self.engage = True
         
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
 
 
-        agents = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
-        enemies = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        self.marines = sorted([a for a in self.units if a.unit_type==UnitTypeId.MARINE.value], key=lambda a: a.tag)
+        self.marauders = sorted([a for a in self.units if a.unit_type==UnitTypeId.MARAUDER.value], key=lambda a: a.tag)
+        self.medivacs = sorted([a for a in self.units if a.unit_type==UnitTypeId.MEDIVAC.value], key=lambda a: a.tag)
+
+        self.enemy_marines = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.MARINE.value], key=lambda a: a.tag)
+        self.enemy_marauders = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.MARAUDER.value], key=lambda a: a.tag)
+        self.enemy_medivacs = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.MEDIVAC.value], key=lambda a: a.tag)
+
+        if not self.units or not self.enemy_units:
+            return []
+
 
         actions_list = []
-        init_unit(obs, self)
 
         if self.init:
             self.pre_health = {}
@@ -46,7 +47,7 @@ class DecisionTreeScript():
         elif self.enemy_marauders:
             target_units = self.enemy_marauders
         else:
-            target_units = enemies
+            target_units = self.enemy_units
         
         
         # Tactic 1: Init forming. Marauders ahead, Marines middle, and Medivac last
@@ -62,8 +63,8 @@ class DecisionTreeScript():
             
             return actions_list
         # Tactic engage to enemy site meanwhile keep the forming.
-        if any([len(closer_than(marauder, enemies, 8))==0 for marauder in self.marauders]) and self.engage:
-            for agent in agents:
+        if any([len(closer_than(marauder, self.enemy_units, 8))==0 for marauder in self.marauders]) and self.engage:
+            for agent in self.units:
                 actions_list.append(move(agent, (agent.pos.x-1, agent.pos.y)))
             return actions_list
         
@@ -71,7 +72,7 @@ class DecisionTreeScript():
         # Attack nearest zealot first, then marauders, finally medivac.
 
         if target_units:
-            target = min(nearest_n_units(center(agents) ,target_units, 3), key=lambda e: e.health+e.shield)
+            target = min(nearest_n_units(center(self.units) ,target_units, 3), key=lambda e: e.health+e.shield)
         else:
             target = random.choice(enemies)
         for m in self.marines:
@@ -80,21 +81,21 @@ class DecisionTreeScript():
                 actions_list.append(move(m, (m.pos.x+1, m.pos.y)))
             else:    
                 if target:
-                    actions_list.append(attack(m, target))
+                    actions_list.append(attack(m, target, visible_matrix))
 
 
         # Define front line
         if self.marines:
             front_line = (center(self.marines)[0] -2, center(self.marines)[1])
         else:
-            front_line = (center(agents)[0] -2, center(agents)[1])
+            front_line = (center(self.units)[0] -2, center(self.units)[1])
 
 
         for m in self.marauders:
             if m.pos.x < front_line[0]:
                 if target_units:
                     if target:
-                        actions_list.append(attack(m, target))
+                        actions_list.append(attack(m, target, visible_matrix))
             else:
                 actions_list.append(move(m, (front_line[0], m.pos.y)))
                 
@@ -103,9 +104,9 @@ class DecisionTreeScript():
             all_units = self.marines + self.marauders
             most_injured_unit = min(all_units, key=lambda u: u.health/u.health_max)
             if most_injured_unit.health != most_injured_unit.health_max:
-                actions_list.append(attack(medivac, most_injured_unit))
+                actions_list.append(attack(medivac, most_injured_unit, visible_matrix))
             else:
-                actions_list.append(move(medivac, (center(agents)[0]+1, center(agents)[1])))
+                actions_list.append(move(medivac, (center(self.units)[0]+1, center(self.units)[1])))
 
         for m in self.marines:
             self.pre_health[m.tag] = self.cur_health[m.tag]

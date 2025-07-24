@@ -11,11 +11,6 @@ class DecisionTreeScript():
     def __init__(self, map_name):
         
         self.map_name = map_name
-        self.zealots = []
-        self.ally_list = ['zealots']
-        
-        self.enemy_stalkers = []
-        self.enemy_list = ['enemy_stalkers']
         
         self.pos_init = True
         self.stage = 0
@@ -23,24 +18,22 @@ class DecisionTreeScript():
         self.center_distance = 13
         
 
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
+
+
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        self.zealots = sorted([a for a in self.units if a.unit_type==UnitTypeId.ZEALOT.value], key=lambda a: a.tag)
+        self.enemy_stalkers = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.STALKER.value], key=lambda a: a.tag)
+
+        if not self.units or not self.enemy_units:
+            return []
         
         actions_list = []
-        init_unit(obs, self)
+
         self.sort_zealots()
-        self.zealots = sorted([unit for unit in self.zealots], key=lambda u: u.tag)
-        # x1 = [u.pos.x for u in self.zealots]
-        # y1 = [u.pos.y for u in self.zealots]
-        # x2 = [u.pos.x for u in self.enemy_stalkers]
-        # y2 = [u.pos.y for u in self.enemy_stalkers]
-        # print(x1, y1)
-        # import matplotlib.pyplot as plt
-        
-        # plt.scatter(x1, y1, c='b')
-        # plt.scatter(x2, y2, c='r')
-        # ax = plt.gca()
-        # ax.set_aspect(1)
-        # plt.show()
+
         if self.pos_init and self.close_check():
             target_center = self.get_target_center()
             agent_center = self.get_agent_center(target_center, self.zealots[0])
@@ -53,7 +46,7 @@ class DecisionTreeScript():
             
         for z in self.zealots:
             target = nearest_n_units(z, self.enemy_stalkers, 1)[0]
-            actions_list.append(attack(z, target))
+            actions_list.append(attack(z, target, visible_matrix))
         
 
 

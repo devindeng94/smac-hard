@@ -11,19 +11,17 @@ class DecisionTreeScript():
         
         self.map_name = map_name
 
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
         
         self.actions_list = []
-        units = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
-        enemy_units = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
 
-        marines = sorted([unit for unit in units if unit.unit_type==UnitTypeId.MARINE.value], key=lambda u: u.tag)
-        enemy_marines = [unit for unit in enemy_units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][0]]
-        
+        marines = [agent for _, agent in agents.items() if agent.health != 0]
+        enemy_marines = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
         if not marines or not enemy_marines:
             return []
         
-        if iteration < 5:
+        if iteration < 10:
             self.update_formation(marines)
             return self.actions_list
         
@@ -34,7 +32,7 @@ class DecisionTreeScript():
         else:
             for marine in marines:
                 
-                self.actions_list.append(attack(marine, center(enemy_marines)))
+                self.actions_list.append(attack(marine, center(enemy_marines), visible_matrix))
 
         return self.actions_list
 

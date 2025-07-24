@@ -30,7 +30,7 @@ extras_deps = {
 
 setup(
     name="SMAC-HARD",
-    version="1.0.0",
+    version="2.0.0",
     description="SMAC-HARD - SMAC-Hard: Enabling Mixed Opponent Strategy Script and Self-play on SMAC.",
     long_description=description,
     author="DevinDeng",

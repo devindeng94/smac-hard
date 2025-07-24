@@ -12,19 +12,21 @@ class DecisionTreeScript():
     def __init__(self, map_name):
         self.map_name = map_name
         
-        self.zerglings = []
-        self.ally_list = ['zerglings']
-        
-        self.enemy_zealots = []
-        self.enemy_list = ['enemy_zealots']
         self.target_dict = {}
                 
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
+
+
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        self.zerglings = sorted([a for a in self.units if a.unit_type==UnitTypeId.ZERGLING.value], key=lambda a: a.tag)
+        self.enemy_zealots = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.ZEALOT.value], key=lambda a: a.tag)
+
+        if not self.units or not self.enemy_units:
+            return []
 
         actions_list = []
-        init_unit(obs, self)
-        self.zerglings = sorted(self.zerglings, key=lambda u: u.tag)
-        self.enemy_zealots = sorted(self.enemy_zealots, key=lambda e: e.tag)
 
 
         # Tacktic 1: Focus fire on one enemy
@@ -42,10 +44,10 @@ class DecisionTreeScript():
 
             for i, z in enumerate(self.zerglings):
                 target = self.target_dict[z.tag]
-                if not target.is_active:
+                if target.health == 0:
                     target = nearest_n_units(z, self.enemy_zealots, 1)[0]
                 
-                actions_list.append(attack(z, (target.pos.x, target.pos.y)))
+                actions_list.append(attack(z, (target.pos.x, target.pos.y), visible_matrix))
                 self.target_dict[z.tag] = target
 
         return actions_list

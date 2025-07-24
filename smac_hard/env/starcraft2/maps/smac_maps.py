@@ -5,8 +5,9 @@ from __future__ import print_function
 from pysc2.maps import lib
 
 
+
 class SMACMap(lib.Map):
-    directory = "SMAC_HARD_maps"
+    directory = "new_maps"
     download = "https://github.com/oxwhirl/smac#smac-maps"
     players = 2
     step_mul = 8
@@ -220,6 +221,114 @@ map_param_registry = {
         "b_race": "Z",
         "unit_type_bits": 0,
         "map_type": "colossus",
+    },
+    "2vr_vs_3sc": {
+        "n_agents": 2,
+        "n_enemies": 3,
+        "limit": 400,
+        "a_race": "P",
+        "b_race": "Z",
+        "unit_type_bits": 0,
+        "map_type": "void_ray",
+    },
+    "3hl_vs_24zl": {
+        "n_agents": 3,
+        "n_enemies": 24,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "Z",
+        "unit_type_bits": 0,
+        "map_type": "hellion",
+    },
+    "3rp_vs_5zl": {
+        "n_agents": 3,
+        "n_enemies": 5,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "P",
+        "unit_type_bits": 0,
+        "map_type": "reaper",
+    },
+    "3rp_vs_24zl": {
+        "n_agents": 3,
+        "n_enemies": 24,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "Z",
+        "unit_type_bits": 0,
+        "map_type": "reaper",
+    },
+    "7q_vs_2bc": {
+        "n_agents": 7,
+        "n_enemies": 2,
+        "limit": 400,
+        "a_race": "Z",
+        "b_race": "T",
+        "unit_type_bits": 0,
+        "map_type": "qween",
+    },
+    "3st_vs_5zl": {
+        "n_agents": 3,
+        "n_enemies": 5,
+        "limit": 400,
+        "a_race": "P",
+        "b_race": "P",
+        "unit_type_bits": 0,
+        "map_type": "stalkers",
+    },
+    "6m_vs_10m": {
+        "n_agents": 6,
+        "n_enemies": 10,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "T",
+        "unit_type_bits": 0,
+        "map_type": "marines",
+    },
+    "mmmt_vs_zspi": {
+        "n_agents": 22,
+        "n_enemies": 16,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "P",
+        "unit_type_bits": 4,
+        "map_type": "MMM",
+    },
+    'unit_test': {
+        "n_agents": 1,
+        "n_enemies": 30,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "T",
+        "unit_type_bits": 0,
+        "map_type": "MMM",
+    },
+    "mmmt": {
+        "n_agents": 22,
+        "n_enemies": 22,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "T",
+        "unit_type_bits": 4,
+        "map_type": "MMM",
+    },
+    "mmmt_vs_zhb": {
+        "n_agents": 22,
+        "n_enemies": 46,
+        "limit": 400,
+        "a_race": "T",
+        "b_race": "T",
+        "unit_type_bits": 4,
+        "map_type": "MMM",
+    },
+    "pvt_large": {
+        "n_agents": 58,
+        "n_enemies": 30,
+        "limit": 2000,
+        "a_race": "T",
+        "b_race": "P",
+        "unit_type_bits": 7,
+        "map_type": "MMM",
     },
 }
 

@@ -12,19 +12,23 @@ class DecisionTreeScript():
     def __init__(self, map_name):
         self.map_name = map_name
         
-        self.zerglings = []
-        self.ally_list = ['zerglings']
-        
-        self.enemy_zealots = []
-        self.enemy_list = ['enemy_zealots']
         self.group_tags = []
         self.init_position = [(15, 22), (22, 15)]
         self.start_tag = True
                 
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
+
+
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        self.zerglings = sorted([a for a in self.units if a.unit_type==UnitTypeId.ZERGLING.value], key=lambda a: a.tag)
+        self.enemy_zealots = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.ZEALOT.value], key=lambda a: a.tag)
+
+        if not self.units or not self.enemy_units:
+            return []
 
         actions_list = []
-        init_unit(obs, self)
         group_units, group_centers = self.group()
         if iteration < 13 and self.start_tag and self.check_start(group_centers):
             for group, pos in zip(group_units, self.init_position):
@@ -37,7 +41,7 @@ class DecisionTreeScript():
         for idx, z in enumerate(self.zerglings):
             
             target = min(nearest_n_units(z, self.enemy_zealots, 2), key=lambda ez: ez.health)
-            actions_list.append(attack(z, target))
+            actions_list.append(attack(z, target, visible_matrix))
 
         return actions_list
     

@@ -103,10 +103,14 @@ MAP_UNITS_TYPES = {
 
 
 def find_by_tag(units, tag):
-
-    for u in units:
-        if u.tag == tag:
-            return u
+    if type(units) == list or type(units) == tuple:
+        for u in units:
+            if u.tag == tag:
+                return u
+    elif type(units) == dict:
+        for _, u in units.items():
+            if u.tag == tag:
+                return u
         
     return None
 

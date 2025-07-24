@@ -13,14 +13,16 @@ class DecisionTreeScript():
         self.init = True
         self.target_dict = {}
 
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
+
+
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        zealots = sorted([a for a in self.units if a.unit_type==UnitTypeId.ZEALOT.value], key=lambda a: a.tag)
+        enemy_stalkers = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.STALKER.value], key=lambda a: a.tag)
         
         self.actions_list = []
-        units = [unit for unit in obs.observation.raw_data.units if unit.owner==2]
-        enemy_units = [unit for unit in obs.observation.raw_data.units if unit.owner==1]
-
-        zealots = sorted([unit for unit in units if unit.unit_type==UnitTypeId.ZEALOT.value], key=lambda u: u.tag)
-        enemy_stalkers = [unit for unit in enemy_units if unit.unit_type==MAP_UNITS_TYPES[self.map_name]['enemy'][0]]
         
         if self.init:
             for i, zealot in enumerate(zealots):
@@ -35,11 +37,11 @@ class DecisionTreeScript():
         # Allocate zealots to groups
         for i, z in enumerate(zealots):
             target = self.target_dict[z.tag]
-            if not target.is_active:
+            if target.health==0:
                 target = nearest_n_units(z, enemy_stalkers, 1)[0]
                 self.target_dict[z.tag] = target
 
-            self.actions_list.append(attack(z, target))
+            self.actions_list.append(attack(z, target, visible_matrix))
 
         return self.actions_list
 

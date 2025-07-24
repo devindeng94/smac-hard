@@ -12,11 +12,6 @@ class DecisionTreeScript():
     def __init__(self, map_name):
         self.map_name = map_name
         
-        self.zerglings = []
-        self.ally_list = ['zerglings']
-        
-        self.enemy_colossuses = []
-        self.enemy_list = ['enemy_colossuses']
         self.group_tags = {}
         
         self.positions = {
@@ -30,12 +25,20 @@ class DecisionTreeScript():
         self.up_group = ['up_left', 'up_right']
         self.down_group = ['down_left', 'down_right']
         
-    def script(self, obs, iteration):
+    def script(self, agents, enemies, agent_ability, visible_matrix, iteration):
+
+
+        self.units = [agent for _, agent in agents.items() if agent.health != 0]
+        self.enemy_units = [enemy for _, enemy in enemies.items() if enemy.health != 0]
+
+        self.zerglings = sorted([a for a in self.units if a.unit_type==UnitTypeId.ZERGLING.value], key=lambda a: a.tag)
+        self.enemy_colossuses = sorted([a for a in self.enemy_units if a.unit_type==UnitTypeId.COLOSSUS.value], key=lambda a: a.tag)
+
+        if not self.units or not self.enemy_units:
+            return []
         
         actions_list = []
-        init_unit(obs, self)
-
-        
+  
         group_units, group_centers = self.group()
         if self.switch_group(group_units['up_left'], group_units['down_left'], 'left') or self.switch_group(group_units['up_right'], group_units['down_right'], 'right'):
             group_units, group_centers = self.group()
@@ -54,7 +57,7 @@ class DecisionTreeScript():
                 center = group_centers[group_id]
                 target_enemy = nearest_n_units(center, self.attack_above, 1)[0]
                 for unit in group:
-                    actions_list.append(attack(unit, target_enemy))
+                    actions_list.append(attack(unit, target_enemy, visible_matrix))
         else:
             for group_id in self.up_group:
                 group = group_units[group_id]
@@ -67,7 +70,7 @@ class DecisionTreeScript():
                 center = group_centers[group_id]
                 target_enemy = nearest_n_units(center, self.attack_down, 1)[0]
                 for unit in group:
-                    actions_list.append(attack(unit, target_enemy))
+                    actions_list.append(attack(unit, target_enemy, visible_matrix))
         else:
             for group_id in self.down_group:
                 group = group_units[group_id]

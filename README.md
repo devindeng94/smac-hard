@@ -1,8 +1,27 @@
-# SMAC-HARD - Enabling Mixed Opponent Strategy Script and Self-play on SMAC
+# SMAC-Hard: Enabling Mixed Opponent Strategy Script and Abilities on SMAC
 
-This is the official repository for the paper: SMAC-HARD: Enabling Mixed Opponent Strategy Script and Self-play on SMAC. Please refer to the accompanying paper for the outline of our motivation.
+SMAC-HARD V2 IS COMING!
 
-[SMAC-HARD](https://github.com/devindeng94/smac-hard) is an extension environment of [SMAC](https://github.com/oxwhirl/smac) for research in the field of cooperative multi-agent reinforcement learning (MARL) based on [Blizzard](http://blizzard.com)'s [StarCraft II](https://en.wikipedia.org/wiki/StarCraft_II:_Wings_of_Liberty) RTS game. SMAC-HARD makes use of Blizzard's [StarCraft II Machine Learning API](https://github.com/Blizzard/s2client-proto) and [DeepMind](https://deepmind.com)'s [PySC2](https://github.com/deepmind/pysc2) to provide a convenient interface for autonomous agents to interact with StarCraft II, getting observations and performing actions. In the self-play implementation, we align the centralized training with decentralized execution interfaces for opponents to agents. In the opponent script editing mode, users can use pysc2 script based on raw observation to write decision-tree scripts and add them to the opponent strategy pools.
+This is the repository of the second version of the paper: SMAC-Hard: Enabling Mixed Opponent Strategy Script and Abilities on SMAC. The first version is in the 'previous-versions\v1' folder. Please refer to the accompanying paper for the outline of our motivation.
+
+[SMAC-HARD](https://github.com/devindeng94/smac-hard) is an extension environment of [SMAC](https://github.com/oxwhirl/smac) for research in the field of cooperative multi-agent reinforcement learning (MARL) based on [Blizzard](http://blizzard.com)'s [StarCraft II](https://en.wikipedia.org/wiki/StarCraft_II:_Wings_of_Liberty) RTS game. SMAC-HARD makes use of Blizzard's [StarCraft II Machine Learning API](https://github.com/Blizzard/s2client-proto) and [DeepMind](https://deepmind.com)'s [PySC2](https://github.com/deepmind/pysc2) to provide a convenient interface for autonomous agents to interact with StarCraft II, getting observations and performing actions. In the opponent script editing mode, users can use pysc2 script based on raw observation to write decision-tree scripts and add them to the opponent strategy pools.
+
+Comparing with the first version, we implement/add:
+
+* Mixed Opponent Strategies including base strategy, attacking the nearest, attacking the weakest, and two LLM-generated scripts for each map.
+* Fog of war.
+* Abilities such as BLINK, STIMPACK, CHARGE, etc.
+* Terrain settings.
+* Real agent sights.
+* More challenging SC2Maps.
+
+<p align="center">
+  <img src="asset/atkg.gif" width="350"/>
+  <img src="asset/atkc.gif" width="350"/><br/>
+  <img src="asset/mmmt.gif" width="350"/>
+  <img src="asset/3st_vs_7zl.gif" width="350"/><br/>
+  <i>Demos of SMAC-HARD tasks</i>
+</p>
 
 # Quick Start
 
@@ -116,143 +135,7 @@ def main():
     env.close()
 
 ```
-### Mixed Opponent Strategy mode at 10M time steps
 
-| SMAC-HARD          | QMIX   | QPLEX  | LDSA   | MAPPO  | HAPPO  |
-|--------------------|--------|--------|--------|--------|--------|
-| 3m                 | 0.9938 | 0.0438 | **1**      | **1**      | 0.4375 |
-| 8m                 | 0.9628 | 0.0875 | **0.9687** | 0.6438 | 0.8625 |
-| 5m\_vs\_6m         | 0.4375 | **0.6188** | 0.4    | 0.3138 | 0.004  |
-| 8m\_vs\_9m         | 0.4938 | 0      | **0.7187** | 0.3528 | 0.5006 |
-| 10m\_vs\_11m       | **0.6813** | 0      | 0.625  | 0.5681 | 0.5672 |
-| 25m                | **0.7813** | 0      | 0.4375 | 0.4562 | 0.2092 |
-| 27m\_vs\_30m       | 0.0313 | 0      | **0.125**  | 0.0938 | 0.0063 |
-| 2s3z               | 0.4125 | 0.4313 | 0.7737 | **0.8735** | 0.7547 |
-| 3s5z               | 0.3625 | 0.1063 | 0.1876 | **0.7225** | 0.6691 |
-| 3s5z\_vs\_3s6z     | 0      | 0      | 0.1319 | 0.1569 | **0.2573** |
-| 1c3s5z             | 0.9625 | 0.7563 | 0.9375 | 0.5445 | **0.975**  |
-| 3s\_vs\_3z         | 0.9913 | 0.9875 | **1**      | 0.9875 | 0.4875 |
-| 3s\_vs\_4z         | 0.7938 | 0.7938 | 0.7815 | **0.9875** | 0.15   |
-| 3s\_vs\_5z         | 0.3438 | 0.5    | 0.875  | **0.9407** | 0      |
-| bane\_vs\_bane     | 0.975  | 0.2313 | 0.8229 | **0.9125** | 0      |
-| so\_many\_baneling | **0.9625** | 0.5938 | 0.875  | 0.8813 | 0.9188 |
-| 2s\_vs\_1sc        | 0.7563 | **0.8875** | 0.4375 | 0.8375 | 0      |
-| 2m\_vs\_1z         | 0      | 0      | 0      | 0      | 0      |
-| 2c\_vs\_64zg       | 0.7891 | 0.5    | 0.9062 | **0.9741** | 0.7686 |
-| MMM                | **0.9875** | 0.95   | 0.875  | 0.3267 | 0.8813 |
-| MMM2               | 0.275  | 0.0006 | **0.5312** | 0.1925 | 0.0425 |
-| 6h\_vs\_8z         | 0.0188 | 0      | **0.0625** | 0.0607 | 0      |
-| corridor           | **0.3063** | 0.1688 | 0      | 0.1804 | 0      |
-
-
-## MARL Self-Play mode
-
-In the self-play mode, two players controlled by agents are inserted, which means observations, states, and other interfaces should be acquired for agent (red) and opponent (blue) separately. Therefore, to start the self-play mode, the 'mode=multi' parameter should be passed into the StarCraft2Env class and the 'player\_id=0' and 'player\_id=1' are taken as parameters. Consequently, the rewards, terminateds, and infos are returned as a list with two variables.
-
-```python
-from smac_hard.env import StarCraft2Env
-import numpy as np
-
-def main():
-    env = StarCraft2Env(map_name="8m", mode='multi')
-    env_info = env.get_env_info()
-
-    red_n_actions = env_info[0]["n_actions"]
-    red_n_agents = env_info[0]["n_agents"]
-
-    blue_n_actions = env_info[1]["n_actions"]
-    blue_n_agents = env_info[1]["n_agents"]
-
-    n_episodes = 5
-
-    for e in range(n_episodes):
-        env.reset()
-        terminated = False
-        red_episode_reward = 0
-        blue_episode_reward = 0
-
-
-        while not terminated:
-            red_obs = env.get_obs(player_id=0)
-            blue_obs = env.get_obs(player_id=1)
-            
-            red_state = env.get_state(player_id=0)
-            blue_state = env.get_state(player_id=1)
-
-
-            red_actions = []
-            for agent_id in range(red_n_agents):
-                avail_actions = env.get_avail_agent_actions(agent_id, player_id=0)
-                avail_actions_ind = np.nonzero(avail_actions)[0]
-                action = np.random.choice(avail_actions_ind)
-                red_actions.append(action)
-
-            blue_actions = []
-            for agent_id in range(blue_n_agents):
-                avail_actions = env.get_avail_agent_actions(agent_id, player_id=1)
-                avail_actions_ind = np.nonzero(avail_actions)[0]
-                action = np.random.choice(avail_actions_ind)
-                blue_actions.append(action)
-
-            rewards, terminateds, _ = env.step([red_actions, blue_actions])
-            red_episode_reward += rewards[0]
-            blue_episode_reward += rewards[1]
-            terminated = terminateds[0]
-
-
-        print("Total reward in episode {} = {} and {}".format(e, red_episode_reward, blue_episode_reward))
-
-    env.close()
-
-```
-
-
-### Black-box evaluation mode at 10M time steps
-
-| SMAC-HARD        | QMIX   | QPLEX  | MAPPO  | HAPPO  |
-|------------------|--------|--------|--------|--------|
-| 3m               | 0.0117 | 0.0898 | 0.1028 | 0.0573 |
-| 8m               | 0.0375 | 0      | 0.0513 | 0.1217 |
-| 5m_vs_6m         | 0      | 0      | 0      | 0      |
-| 8m_vs_9m         | 0      | 0      | 0      | 0      |
-| 10m_vs_11m       | 0      | 0      | 0      | 0      |
-| 25m              | 0      | 0      | 0      | 0      |
-| 27m_vs_30m       | 0      | 0      | 0      | 0      |
-| 2s3z             | 0.0508 | 0      | 0.1217 | 0.0959 |
-| 3s5z             | 0.0313 | 0      | 0.0375 | 0.0705 |
-| 3s5z_vs_3s6z     | 0      | 0      | 0      | 0      |
-| 1c3s5z           | 0.0703 | 0      | 0.1027 | 0.0912 |
-| 3s_vs_3z         | 0.3359 | 0.3555 | 0.4125 | 0.3724 |
-| 3s_vs_4z         | 0.7461 | 0.5052 | 0.4467 | 0      |
-| 3s_vs_5z         | 0.5305 | 0.8573 | 0.5359 | 0      |
-| bane_vs_bane     | 0.2578 | 0      | 0.3484 | 0      |
-| so_many_baneling | 0      | 0      | 0      | 0      |
-| 2s_vs_1sc        | 0      | 0      | 0      | 0      |
-| 2m_vs_1z         | 0      | 0      | 0      | 0      |
-| 2c_vs_64zg       | 0.6238 | 0      | 0.3419 | 0.2565 |
-| MMM              | 0      | 0      | 0      | 0      |
-| MMM2             | 0      | 0      | 0      | 0      |
-| 6h_vs_8z         | 0.0898 | 0      | 0      | 0      |
-| corridor         | 0      | 0      | 0      | 0      |
-
-(The experiments on LDSA is still running)
-
-The codebase for generating the QMIX, QPLEX results above is [pymarl2](https://github.com/hijkzzz/pymarl2). We also follow the hyper-parameters described in [pymarl3](https://github.com/tjuHaoXiaotian/pymarl3).
-~~~
-# 3s5z_vs_3s6z
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=3s5z_vs_3s6z runner=parallel batch_size_run=4 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=3s5z_vs_3s6z runner=parallel batch_size_run=4 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-
-# 6h_vs_8z
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=6h_vs_8z runner=parallel batch_size_run=8 t_max=10050000 epsilon_anneal_time=500000 batch_size=128 td_lambda=0.3
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=6h_vs_8z runner=parallel batch_size_run=8 t_max=10050000 epsilon_anneal_time=500000 batch_size=128 td_lambda=0.3
-
-# other scenarios
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qmix --env-config=sc2 with env_args.map_name=other_scenarios runner=parallel batch_size_run=8 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-CUDA_VISIBLE_DEVICES="0" python src/main.py --config=qplex --env-config=sc2 with env_args.map_name=other_scenarios runner=parallel batch_size_run=8 t_max=10050000 epsilon_anneal_time=100000 batch_size=128 td_lambda=0.6
-~~~
-
-The MAPPO and HAPPO are from the codebase [on-policy](https://github.com/marlbenchmark/on-policy) and the hyper-parameters are provided by the official scripts.
 
 # Citing  SMAC-HARD 
 
