@@ -130,7 +130,7 @@ subprocess32==3.5.4
 tabulate==0.8.7
 termcolor==1.1.0
 tensorboardX
-tornado==5.1.1
+tornado==6.5.6
 tqdm==4.48.2
 typing-extensions==3.7.4.3
 urllib3==1.23
