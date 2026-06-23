@@ -67,7 +67,7 @@ mock==2.0.0
 monotonic==1.5
 more-itertools==4.3.0
 mpyq==0.2.5
-msgpack==1.0.0
+msgpack==1.2.1
 multidict==4.7.6
 munch==2.3.2
 numpy==1.18.5
