@@ -107,7 +107,7 @@ pytest==3.8.2
 python-dateutil==2.7.3
 python-utils==2.4.0
 pytz==2020.1
-PyYAML==3.13
+PyYAML==5.4
 pyzmq==19.0.2
 redis==3.4.1
 requests==2.24.0
