@@ -125,7 +125,7 @@ six==1.15.0
 sk-video==1.1.10
 smmap==3.0.4
 snakeviz==1.0.0
-soupsieve==2.0.1
+soupsieve==2.8.4
 subprocess32==3.5.4
 tabulate==0.8.7
 termcolor==1.1.0
